@@ -6,11 +6,12 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '/node_modules/primeflex/primeflex.css';
+import Menu from './components/menu';
 
 function App() { //NOTA: USAR EL ROUTER
   return (
     <div className="App">
-      Texto de prueba
+      <Menu/>
     </div>
   );
 }
