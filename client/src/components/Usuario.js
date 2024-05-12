@@ -157,7 +157,7 @@ const Usuario = () => {
         setPermisosUsuarios(response.data);
       })
       .catch(error => {
-        console.error("Error fetching programas educativos:", error);
+        console.error("Error fetching permiso usuarios:", error);
       });
   }, []);
 
@@ -177,7 +177,7 @@ const Usuario = () => {
   const cellEditor = (options) => {
     seteditando(true);
     switch(options.field){
-      case 'id_PermisoUsuarios':
+      case 'id_PermisoUsuario':
         return PermisoUsuarioEditor(options);        
       case 'contrasenia':
         return contrasenaEditor(options);
@@ -247,18 +247,18 @@ const Usuario = () => {
           } 
           break;
         case 'apellidoP_Usuario':
-          if (newValue !== rowData[field]){             
-            rowData[field] = newValue;
-            put(rowData);                       
-          }else{
+            if (newValue.trim().length > 0 && newValue !== rowData[field]){                                    
+                rowData[field] = newValue;               
+                put(rowData);                       
+          }else{                             
             event.preventDefault();
           } 
           break;
-        case 'apellidoM_Usuario':
-          if (newValue > 0 && newValue !== null && newValue !== rowData[field]){ 
-            rowData[field] = newValue;
-            put(rowData);              
-          }else{
+        case 'apellidoM_Usuario':          
+          if (newValue.trim().length > 0 && newValue !== rowData[field]){                                    
+                rowData[field] = newValue;               
+                put(rowData);                       
+          }else{                             
             event.preventDefault();
           } 
           break;
@@ -271,17 +271,17 @@ const Usuario = () => {
           } 
           break;
         case 'contrasenia':
+          if (newValue.trim().length > 0 && newValue !== rowData[field]){                                    
+            rowData[field] = newValue;               
+            put(rowData);                       
+          }else{                             
+            event.preventDefault();
+          }
+          break;
+        case 'id_PermisoUsuario':
           if (newValue !== rowData[field]){             
             rowData[field] = newValue;
             put(rowData);                       
-          }else{
-            event.preventDefault();
-          } 
-          break;
-        case 'id_PermisoUsuario':
-          if (newValue > 0 && newValue !== null && newValue !== rowData[field]){ 
-            rowData[field] = newValue;
-            put(rowData);              
           }else{
             event.preventDefault();
           } 
@@ -394,7 +394,7 @@ const Usuario = () => {
         </div>
         <DataTable value={filtroUsuario.length ? filtroUsuario :usuariosList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
-              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} editor={field === 'id_Usuario' ? null : (options) => cellEditor(options)}
+              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '10%' }} editor={field === 'id_Usuario' ? null : (options) => cellEditor(options)}
               onCellEditComplete={onCellEditComplete}
               body={(rowData) => renderBody(rowData, field)} // Llama a la función renderBody para generar el cuerpo de la columna
               />;
