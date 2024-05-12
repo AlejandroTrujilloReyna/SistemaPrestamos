@@ -6,7 +6,7 @@ import 'primeicons/primeicons.css';
 import '/node_modules/primeflex/primeflex.css';
 import Menu from './components/Menu';
 import PermisoUsuario from './components/PermisoUsuario';
-
+import Usuario from './components/Usuario';
 
 function App() { //NOTA: USAR EL ROUTER
   return (
@@ -15,6 +15,7 @@ function App() { //NOTA: USAR EL ROUTER
       <BrowserRouter>
         <Routes>
           <Route path='/PermisoUsuario' element={<PermisoUsuario/>}/>
+          <Route path='/Usuario' element={<Usuario/>}/>
         </Routes>
       </BrowserRouter>
     </div>

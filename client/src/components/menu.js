@@ -11,6 +11,11 @@ const Menu = () => {
             label: 'Permisos',
             icon: 'pi pi-building-columns',
             command: () => {window.location.href='/PermisoUsuario';}
+        },
+        {
+            label: 'Usuarios',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/Usuario';}
         } 
                          
 
