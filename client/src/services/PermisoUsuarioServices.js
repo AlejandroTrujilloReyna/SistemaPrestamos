@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const PermisoUsuarioService = {
+const PermisoUsuarioServices = {
     registrarPermisoUsuario: (datos) => {
         return Axios.post("http://localhost:3001/permisousuario/registrarPermisoUsuario", datos);
     },
@@ -12,4 +12,4 @@ const PermisoUsuarioService = {
     }
 }
 
-export default PermisoUsuarioService;
+export default PermisoUsuarioServices;

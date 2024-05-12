@@ -11,7 +11,19 @@ const Menu = () => {
             label: 'Permisos',
             icon: 'pi pi-building-columns',
             command: () => {window.location.href='/PermisoUsuario';}
-        } 
+        },
+
+        {
+            label: 'Programa Educativo',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/ProgramaEducativo';}
+        },
+
+        {
+            label: 'Tipo de Solicitante',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/TipoSolicitante';}
+        }  
                          
 
     ];

@@ -6,8 +6,8 @@ import 'primeicons/primeicons.css';
 import '/node_modules/primeflex/primeflex.css';
 import Menu from './components/Menu';
 import PermisoUsuario from './components/PermisoUsuario';
-
-
+import ProgramaEducativo from './components/ProgramaEducativo';
+import TipoSolicitante from './components/TipoSolicitante';
 function App() { //NOTA: USAR EL ROUTER
   return (
     <div className="App">
@@ -15,6 +15,8 @@ function App() { //NOTA: USAR EL ROUTER
       <BrowserRouter>
         <Routes>
           <Route path='/PermisoUsuario' element={<PermisoUsuario/>}/>
+          <Route path='/ProgramaEducativo' element={<ProgramaEducativo/>}/>
+          <Route path='/TipoSolicitante' element={<TipoSolicitante/>}/>
         </Routes>
       </BrowserRouter>
     </div>

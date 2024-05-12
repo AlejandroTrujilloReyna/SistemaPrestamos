@@ -8,21 +8,23 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
-import PermisoUsuarioServices from '../services/PermisoUsuarioServices';
+import TipoSolicitanteServices from '../services/TipoSolicitanteServices';
 
-const PermisoUsuario = () => {
-  //VARIABLES PARA EL REGISTRO  
-  const [id_PermisoUsuario,setid_PermisoUsuario] = useState("");
-  const [nombre_PermisoUsuario,setnombre_PermisoUsuario] = useState("");
-
-  //VARIABLES PARA LA CONSULTA
-  const [permisosUsuariosList,setpermisosUsuariosList] = useState([]);
-  const [filtroPermisoUsuario, setfiltroPermisoUsuario] = useState([]);  
-  //VARIABLE PARA LA MODIFICACION QUE INDICA QUE SE ESTA EN EL MODO EDICION
-  const [editando,seteditando] = useState(false);
-  //VARIABLES PARA EL ERROR
-  const toast = useRef(null);
+const TipoSolicitante = () => {
+    
+    //VARIABLES PARA EL REGISTRO  
+    const [id_TipoSolicitante,setid_TipoSolicitante] = useState("");
+    const [nombre_TipoSolicitante,setnombre_TipoSolicitante] = useState("");
   
+    //VARIABLES PARA LA CONSULTA
+    const [tiposolicitanteList,settiposolicitanteList] = useState([]);
+    const [filtroTipoSolicitante, setfiltroTipoSolicitante] = useState([]);  
+    //VARIABLE PARA LA MODIFICACION QUE INDICA QUE SE ESTA EN EL MODO EDICION
+    const [editando,seteditando] = useState(false);
+    //VARIABLES PARA EL ERROR
+    const toast = useRef(null);
+  
+
   //MENSAJE DE EXITO
   const mostrarExito = (mensaje) => {
     toast.current.show({severity:'success', summary: 'Exito', detail:mensaje, life: 3000});
@@ -39,14 +41,14 @@ const PermisoUsuario = () => {
   //FUNCION PARA REGISTRAR
   const add = ()=>{
     //VALIDACION DE CAMPOS VACIOS
-    if (!nombre_PermisoUsuario || !id_PermisoUsuario) {      
+    if (!nombre_TipoSolicitante || !id_TipoSolicitante) {      
       mostrarAdvertencia("Existen campos vacios");
       return;
     }
     //MANDAR A LLAMAR AL REGISTRO SERVICE
-    PermisoUsuarioServices.registrarPermisoUsuario({  
-        id_PermisoUsuario: id_PermisoUsuario,      
-        nombre_PermisoUsuario:nombre_PermisoUsuario
+    TipoSolicitanteServices.registrarTipoSolicitante({  
+        id_TipoSolicitante: id_TipoSolicitante,      
+        nombre_TipoSolicitante:nombre_TipoSolicitante
     }).then(response=>{//CASO EXITOSO
       if (response.status === 200) {
         mostrarExito("Registro Exitoso");
@@ -56,16 +58,19 @@ const PermisoUsuario = () => {
     }).catch(error=>{//EXCEPCIONES
       if(error.response.status === 401){
         mostrarAdvertencia("Nombre ya existente");        
+      }else if(error.response.status === 400){
+        mostrarAdvertencia("Clave ya existente");
       }else if(error.response.status === 500){  
         mostrarError("Error interno del servidor");
       }     
     });
-  }  
+  }
+
 
   //FUNCION PARA CONSULTA
   const get = ()=>{
-    PermisoUsuarioServices.consultarPermisoUsuario().then((response)=>{//CASO EXITOSO
-      setpermisosUsuariosList(response.data);      
+    TipoSolicitanteServices.consultarTipoSolicitante().then((response)=>{//CASO EXITOSO
+      settiposolicitanteList(response.data);      
     }).catch(error=>{//EXCEPCIONES
       if (error.response.status === 500) {
         //mostrarError("Error del sistema");
@@ -73,9 +78,10 @@ const PermisoUsuario = () => {
     });    
   }
 
+
   //FUNCION PARA LA MODIFICACION
   const put = (rowData) =>{
-    PermisoUsuarioServices.modificarPermisoUsuario(rowData).then((response)=>{//CASO EXITOSO
+    TipoSolicitanteServices.modificarTipoSolicitante(rowData).then((response)=>{//CASO EXITOSO
       if (response.status === 200) {
         mostrarExito("Modificación Exitosa");        
       }
@@ -89,20 +95,21 @@ const PermisoUsuario = () => {
     });
   }
 
+
   //!!!EXTRAS DE REGISTRO
 
   //FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () =>{
-    setid_PermisoUsuario("");
-    setnombre_PermisoUsuario("");
+    setid_TipoSolicitante(0);
+    setnombre_TipoSolicitante("");
   } 
 
   //!!!EXTRAS DE CONSULTA
   
   //COLUMNAS PARA LA TABLA
   const columns = [
-    {field: 'id_PermisoUsuario', header: 'Id' },
-    {field: 'nombre_PermisoUsuario', header: 'Nombre' },      
+    {field: 'id_TipoSolicitante', header: 'Id' },
+    {field: 'nombre_TipoSolicitante', header: 'Nombre' },      
   ];
   
   //MANDAR A LLAMAR A LOS DATOS EN CUANTO SE INGRESA A LA PAGINA
@@ -110,19 +117,20 @@ const PermisoUsuario = () => {
     get();
   },[]);
   
+
   //FUNCION PARA LA BARRA DE BUSQUEDA
   const onSearch = (e) => {
     const value = e.target.value.toLowerCase();
-    const filteredData = permisosUsuariosList.filter((item) => {
+    const filteredData = tiposolicitanteList.filter((item) => {
         return (
-            item.id_PermisoUsuario.toString().includes(value) ||
-            item.nombre_PermisoUsuario.toLowerCase().includes(value)
+            item.id_TipoSolicitante.toString().includes(value) ||
+            item.nombre_TipoSolicitante.toLowerCase().includes(value)
         );
     });
-    setfiltroPermisoUsuario(filteredData);
+    setfiltroTipoSolicitante(filteredData);
   };  
 
- 
+
   //!!!EXTRAS DE MODIFICACION
 
   //ACTIVAR EDICION DE CELDA
@@ -146,7 +154,7 @@ const PermisoUsuario = () => {
       let { rowData, newValue, field, originalEvent: event } = e;                          
       switch (field) {
         //CADA CAMPO QUE SE PUEDA MODIRICAR ES UN CASO        
-        case 'nombre_PermisoUsuario':
+        case 'nombre_TipoSolicitante':
           if (newValue.trim().length > 0 && newValue !== rowData[field]){                                    
                 rowData[field] = newValue;               
                 put(rowData);                       
@@ -160,6 +168,7 @@ const PermisoUsuario = () => {
       seteditando(false);
   }; 
 
+  
   //!!!EXTRAS CAMPOS
 
   const validarTexto = (value) => {
@@ -175,33 +184,35 @@ const PermisoUsuario = () => {
     // Verificar si el valor coincide con la expresión regular
     return value==='' || regex.test(value);
   };
-  return (
-    <>
+
+
+return (
+<>
     {/*APARICION DE LOS MENSAJES (TOAST)*/}
     <Toast ref={toast} />
       {/*PANEL PARA EL REGISTRO*/}
-      <Panel header="Registrar Permiso de Usuario" className='mt-3' toggleable>        
+      <Panel header="Registrar Tipo de Solicitante" className='mt-3' toggleable>        
         <div className="formgrid grid mx-8 justify-content-center">
         <div className="field col-2">
               <label>Id</label>
-              <InputText type="text" keyfilter={/^[0-9]*$/} value={id_PermisoUsuario} maxLength={1}
+              <InputText type="text" keyfilter={/^[0-9]*$/} value={id_TipoSolicitante} maxLength={11}
                   onChange={(event)=>{
                     if (validarNumero(event.target.value)) {
-                      setid_PermisoUsuario(event.target.value);
+                      setid_TipoSolicitante(event.target.value);
                     }
                   }} 
-                  placeholder="Ej.6" 
+                  placeholder="Ej.105" 
               className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
           </div>
           <div className="field col-4">
               <label>Nombre</label>
-              <InputText type="text" keyfilter={/[a-zA-ZñÑ\s]/} value={nombre_PermisoUsuario} maxLength={255}
+              <InputText type="text" keyfilter={/[a-zA-ZñÑ\s]/} value={nombre_TipoSolicitante} maxLength={255}
                   onChange={(event)=>{
                     if (validarTexto(event.target.value)) {
-                      setnombre_PermisoUsuario(event.target.value);
+                      setnombre_TipoSolicitante(event.target.value);
                     }
                   }}  
-                  placeholder="Ej.Laboratorio de LSC" 
+                  placeholder="Ej.(poner ejemplo)" 
               className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full custom-input-text"/>              
           </div>           
         </div>
@@ -210,20 +221,24 @@ const PermisoUsuario = () => {
         </div>                
       </Panel>
       {/*PANEL PARA LA CONSULTA DONDE SE INCLUYE LA MODIFICACION*/}
-      <Panel header="Consultar Permisos de Usuario" className='mt-3' toggleable>
+      <Panel header="Consultar Tipos de Solicitantes" className='mt-3' toggleable>
         <div className="mx-8 mb-4">
           <InputText type="search" placeholder="Buscar..." maxLength={255} onChange={onSearch} className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none w-full" />  
         </div>
-        <DataTable value={filtroPermisoUsuario.length ? filtroPermisoUsuario :permisosUsuariosList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
+        <DataTable value={filtroTipoSolicitante.length ? filtroTipoSolicitante :tiposolicitanteList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
-              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} editor={field === 'id_PermisoUsuario' ? null : (options) => cellEditor(options)}
+              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} editor={field === 'id_TipoSolicitante' ? null : (options) => cellEditor(options)}
               onCellEditComplete={onCellEditComplete}               
               />;
           })}
         </DataTable>          
       </Panel>     
     </>
-  )
-}
 
-export default PermisoUsuario
+
+
+)
+
+
+}
+export default TipoSolicitante

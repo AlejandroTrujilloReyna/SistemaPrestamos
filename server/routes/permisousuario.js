@@ -8,7 +8,7 @@ const db = require("../db");
         const id_PermisoUsuario = req.body.id_PermisoUsuario;
         const nombre_PermisoUsuario = req.body.nombre_PermisoUsuario;
         
-        db.query('SELECT * FROM permisousuario WHERE nombre_PermisoUsuario = ?',[id_PermisoUsuario], (err, results) => {
+        db.query('SELECT * FROM permisousuario WHERE nombre_PermisoUsuario = ?',[nombre_PermisoUsuario], (err, results) => {
             if(err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");
@@ -38,6 +38,9 @@ const db = require("../db");
           res.status(200).json(results);
         });
     });
+
+   
+    
     
     
     router.put("/modificarPermisoUsuario", (req, res) => {
