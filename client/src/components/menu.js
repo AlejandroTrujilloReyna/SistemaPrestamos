@@ -4,28 +4,18 @@ import { Menubar } from 'primereact/menubar';
 const Menu = () => {
     const items = [
         {
-            label: 'Sistema Prestamo',
-        },
-        {
-            label: 'Prestamo de Equipo',
-            icon: 'pi pi-building-columns',
-            //command: () => {window.location.href='/UnidadAcademica';}
-        }, 
-        
-        {
-            label: 'Historial de Prestamo',
-            icon: 'pi pi-briefcase',
-            //command: () => {window.location.href='/ProgramaEducativo';}
+            label: 'Sistema de Prestamo',
         },
 
         {
-            label: 'Inventario',
+            label: 'Permisos',
             icon: 'pi pi-building-columns',
-            //command: () => {window.location.href='/UnidadAprendizaje';}
-        },                          
+            command: () => {window.location.href='/PermisoUsuario';}
+        } 
+                         
 
     ];
-    const start = <img alt="logo" src="https://comunicacioninstitucional.uabc.mx/sites/default/files/inline-images/escudo-actualizado-2022.png" height="40" className="mr-2"></img>;         
+    const start = <img alt="logo" src="/images/image.png" height="40" className="mr-2"></img>;         
   return (
     <>
         <Menubar model={items} start={start}/>                              
