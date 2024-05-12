@@ -13,6 +13,7 @@ const Menu = () => {
             command: () => {window.location.href='/PermisoUsuario';}
         },
 
+
         {
             label: 'Programa Educativo',
             icon: 'pi pi-building-columns',
@@ -23,7 +24,10 @@ const Menu = () => {
             label: 'Tipo de Solicitante',
             icon: 'pi pi-building-columns',
             command: () => {window.location.href='/TipoSolicitante';}
-        }  
+        } 
+
+        
+
                          
 
     ];

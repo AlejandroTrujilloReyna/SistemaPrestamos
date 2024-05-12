@@ -63,7 +63,7 @@ const db = require("../db");
                 return res.status(401).send("El Correo del Usuario ya existe");
             }
             
-            db.query('UPDATE usuario SET nombre_Usuario=?, apellidoP_Usuario=?, apellidoM_Usuario=?, correo=?, contrasenia=?, id_PermisoUsuario=?, WHERE id_Usuario=?',
+            db.query('UPDATE usuario SET nombre_Usuario=?, apellidoP_Usuario=?, apellidoM_Usuario=?, correo=?, contrasenia=?, id_PermisoUsuario=? WHERE id_Usuario=?',
             [nombre_Usuario,apellidoP_Usuario,apellidoM_Usuario,correo,contrasenia,id_PermisoUsuario,id_Usuario],(err,result) =>{
                 if (err) {
                     console.log(err);
