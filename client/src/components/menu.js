@@ -24,12 +24,13 @@ const Menu = () => {
             label: 'Tipo de Solicitante',
             icon: 'pi pi-building-columns',
             command: () => {window.location.href='/TipoSolicitante';}
+        },
+
+        {
+            label: 'Usuario',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/Usuario';}
         } 
-
-        
-
-                         
-
     ];
     const start = <img alt="logo" src="/images/image.png" height="40" className="mr-2"></img>;         
   return (
