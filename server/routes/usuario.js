@@ -13,7 +13,7 @@ const db = require("../db");
         const contrasenia = req.body.contrasenia;
         const id_PermisoUsuario = req.body.id_PermisoUsuario;
         
-        db.query('SELECT * FROM usuario WHERE correo = ?',[id_PermisoUsuario], (err, results) => {
+        db.query('SELECT * FROM usuario WHERE correo = ?',[correo], (err, results) => {
             if(err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");

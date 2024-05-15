@@ -8,6 +8,7 @@ import Menu from './components/Menu';
 import PermisoUsuario from './components/PermisoUsuario';
 import Usuario from './components/Usuario';import ProgramaEducativo from './components/ProgramaEducativo';
 import TipoSolicitante from './components/TipoSolicitante';
+import Solicitante from './components/Solicitante';
 function App() { //NOTA: USAR EL ROUTER
   return (
     <div className="App">
@@ -18,6 +19,7 @@ function App() { //NOTA: USAR EL ROUTER
           <Route path='/Usuario' element={<Usuario/>}/>
           <Route path='/ProgramaEducativo' element={<ProgramaEducativo/>}/>
           <Route path='/TipoSolicitante' element={<TipoSolicitante/>}/>
+          <Route path='/Solicitante' element={<Solicitante/>}/>
         </Routes>
       </BrowserRouter>
     </div>

@@ -16,6 +16,13 @@ app.use("/programaeducativo", programaeducativoRoutes);
 
 const TipoSolicitanteRoutes = require("./routes/tiposolicitante");
 app.use("/tiposolicitante",TipoSolicitanteRoutes );
+
+const solicitanteRoutes = require("./routes/solicitante");
+app.use("/solicitante",solicitanteRoutes );
+
+const prestamoRoutes = require("./routes/prestamo");
+app.use("/prestamo",prestamoRoutes );
+
 app.listen(3001,()=>{
     console.log("Corriendo en el puerto 3001");
 })

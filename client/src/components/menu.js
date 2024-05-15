@@ -30,6 +30,11 @@ const Menu = () => {
             label: 'Usuario',
             icon: 'pi pi-building-columns',
             command: () => {window.location.href='/Usuario';}
+        },
+        {
+            label: 'Solicitante',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/Solicitante';}
         } 
     ];
     const start = <img alt="logo" src="/images/image.png" height="40" className="mr-2"></img>;         
