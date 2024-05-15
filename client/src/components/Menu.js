@@ -12,11 +12,11 @@ const Menu = () => {
             items: [
                 {
                     label: 'Inventario',
-                    command: () => {window.location.href='/inventario';}                 
+                    command: () => {window.location.href='/Inventario';}                 
                 },                
                 {
                     label: 'Ubicacion de Inventario',
-                    command: () => {window.location.href='/ubicacioninventario';}                    
+                    command: () => {window.location.href='/UbicacionInventario';}                    
                 },
             ]
         },

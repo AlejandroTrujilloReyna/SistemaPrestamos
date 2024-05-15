@@ -12,6 +12,7 @@ import Categoria from './components/Categoria';
 import Estado from './components/Estado';
 import Modelo from './components/Modelo';
 import Marca from './components/Marca';
+import UbicacionInventario from './components/UbicacionInventario';
 
 function App() { //NOTA: USAR EL ROUTER
   return (
@@ -20,6 +21,7 @@ function App() { //NOTA: USAR EL ROUTER
       <BrowserRouter>
         <Routes>
           <Route path='/Inventario' element={<Inventario/>}/>
+          <Route path ='/UbicacionInventario' element={<UbicacionInventario/>}/>
           <Route path='/Material' element={<Material/>}/>
           <Route path='/Categoria' element={<Categoria/>}/>
           <Route path='/Estado' element={<Estado/>}/>

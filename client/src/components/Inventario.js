@@ -20,7 +20,7 @@ const Inventario = () => {
   //VARIABLES PARA LA CONSULTA
   const [inventarioList,setinventarioList] = useState([]);
   const [filtroinventario, setfiltroinventario] = useState([]);
-  const [ubicacionesInventarios, setUbicacionesInventarios] = useState([]);
+  const [ubicacionesinventarios, setubicacionesinventarios] = useState([]);
 
   //VARIABLE PARA LA MODIFICACION QUE INDICA QUE SE ESTA EN EL MODO EDICION
   const [editando, seteditando] = useState(false);
@@ -223,7 +223,7 @@ const Inventario = () => {
               <label>Ubicacion Inventario</label>
             <Dropdown className="text-base text-color surface-overlay p-0 m-0 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
               value={clave_UbicacionInventario} 
-              options={ubicacionesInventarios} 
+              options={ubicacionesinventarios} 
               onChange={(e) => {
                 setclave_UbicacionInventario(e.value);
               }} 
