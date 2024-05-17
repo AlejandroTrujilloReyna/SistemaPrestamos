@@ -11,7 +11,7 @@ const db = mysql.createConnection({
     host:"localhost",
     user:"root",
     password:"root",
-    database:""
+    database:"bdsistemaprestamos"
 })
 
 app.listen(3001,()=>{

@@ -7,11 +7,6 @@ import 'primeicons/primeicons.css';
 import '/node_modules/primeflex/primeflex.css';
 import Menu from './components/Menu';
 import Inventario from './components/Inventario';
-import Material from './components/Material';
-import Categoria from './components/Categoria';
-import Estado from './components/Estado';
-import Modelo from './components/Modelo';
-import Marca from './components/Marca';
 import UbicacionInventario from './components/UbicacionInventario';
 
 function App() { //NOTA: USAR EL ROUTER
@@ -22,11 +17,6 @@ function App() { //NOTA: USAR EL ROUTER
         <Routes>
           <Route path='/Inventario' element={<Inventario/>}/>
           <Route path ='/UbicacionInventario' element={<UbicacionInventario/>}/>
-          <Route path='/Material' element={<Material/>}/>
-          <Route path='/Categoria' element={<Categoria/>}/>
-          <Route path='/Estado' element={<Estado/>}/>
-          <Route path='/Modelo' element={<Modelo/>}/>
-          <Route path='/Marca' element={<Marca/>}/>
         </Routes>
       </BrowserRouter>    
       </div>
