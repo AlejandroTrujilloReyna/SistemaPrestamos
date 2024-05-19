@@ -206,4 +206,12 @@ const Marca = () => {
       {/* PANEL PARA LA CONSULTA DONDE SE INCLUYE LA MODIFICACION */}
       <Panel header="Consultar Marca" className='mt-3' toggleable>
         <div className="mx-8 mb-4">
-          <InputText
+          <InputText type="text" placeholder="Buscar..." onChange={onSearch} />
+        </div>
+<DataTable value={filtroMarca} editMode="cell" className="editable-cells-table" responsiveLayout="scroll">
+        </Panel>
+        </>
+);
+}
+
+export default Marca;
