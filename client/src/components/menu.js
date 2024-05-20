@@ -35,6 +35,11 @@ const Menu = () => {
             label: 'Solicitante',
             icon: 'pi pi-building-columns',
             command: () => {window.location.href='/Solicitante';}
+        }, 
+        {
+            label: 'Prestamo',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/Prestamo';}
         } 
     ];
     const start = <img alt="logo" src="/images/image.png" height="40" className="mr-2"></img>;         

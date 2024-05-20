@@ -23,6 +23,8 @@ app.use("/solicitante",solicitanteRoutes );
 const prestamoRoutes = require("./routes/prestamo");
 app.use("/prestamo",prestamoRoutes );
 
+const materialRoutes = require("./routes/material");
+app.use("/material",materialRoutes );
 app.listen(3001,()=>{
     console.log("Corriendo en el puerto 3001");
 })
