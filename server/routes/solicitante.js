@@ -8,7 +8,7 @@ const db = require("../db");
         const id_Solicitante = req.body.id_Solicitante;
         const nombre_Solicitante = req.body.nombre_Solicitante;
         const apellidoP_Solicitante = req.body.apellidoP_Solicitante;
-        const apellidoM_Solicitante = req.body.apellidoM_Solicitante;
+        const apellidoM_Solicitate = req.body.apellidoM_Solicitate;
         const semestre = req.body.semestre;
         const activo = req.body.activo;
         const id_TipoSolicitante = req.body.id_TipoSolicitante;
@@ -22,8 +22,8 @@ const db = require("../db");
             if(results.length > 0) {
                 return res.status(401).send("El ID del Solicitante ya existe");
             }
-            db.query('INSERT INTO solicitante (id_Solicitante, nombre_Solicitante,apellidoP_Solicitante,apellidoM_Solicitante,semestre,activo,id_TipoSolicitante,id_ProgramaEducativo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                [id_Solicitante, nombre_Solicitante,apellidoP_Solicitante,apellidoM_Solicitante,semestre,activo,id_TipoSolicitante,id_ProgramaEducativo], (err, result) => {
+            db.query('INSERT INTO solicitante (id_Solicitante, nombre_Solicitante,apellidoP_Solicitante,apellidoM_Solicitate,semestre,activo,id_TipoSolicitante,id_ProgramaEducativo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [id_Solicitante, nombre_Solicitante,apellidoP_Solicitante,apellidoM_Solicitate,semestre,activo,id_TipoSolicitante,id_ProgramaEducativo], (err, result) => {
                     if (err) {
                         console.log(err);
                         return res.status(500).send("Error interno del servidor");
@@ -48,14 +48,14 @@ const db = require("../db");
         const id_Solicitante = req.body.id_Solicitante;
         const nombre_Solicitante = req.body.nombre_Solicitante;
         const apellidoP_Solicitante = req.body.apellidoP_Solicitante;
-        const apellidoM_Solicitante = req.body.apellidoM_Solicitante;
+        const apellidoM_Solicitate = req.body.apellidoM_Solicitate;
         const semestre = req.body.semestre;
         const activo = req.body.activo;
         const id_TipoSolicitante = req.body.id_TipoSolicitante;
         const id_ProgramaEducativo = req.body.id_ProgramaEducativo;  
 
-        db.query('UPDATE solicitante SET nombre_Solicitante=?, apellidoP_Solicitante=?, apellidoM_Solicitante=?, semestre=?, activo=?, id_TipoSolicitante=?, id_ProgramaEducativo=? WHERE id_Solicitante=?',
-            [nombre_Solicitante,apellidoP_Solicitante,apellidoM_Solicitante,semestre,activo,id_TipoSolicitante,id_ProgramaEducativo,id_Solicitante],(err,result) =>{
+        db.query('UPDATE solicitante SET nombre_Solicitante=?, apellidoP_Solicitante=?, apellidoM_Solicitate=?, semestre=?, activo=?, id_TipoSolicitante=?, id_ProgramaEducativo=? WHERE id_Solicitante=?',
+            [nombre_Solicitante,apellidoP_Solicitante,apellidoM_Solicitate,semestre,activo,id_TipoSolicitante,id_ProgramaEducativo,id_Solicitante],(err,result) =>{
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");

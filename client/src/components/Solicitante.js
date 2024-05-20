@@ -18,7 +18,7 @@ const Solicitante = () => {
   const [id_Solicitante,setid_Solicitante] = useState("");
   const [nombre_Solicitante,setnombre_Solicitante] = useState("");
   const [apellidoP_Solicitante, setapellidoP_Solicitante] = useState("");
-  const [apellidoM_Solicitante, setapellidoM_Solicitante] = useState("");
+  const [apellidoM_Solicitate, setapellidoM_Solicitate] = useState("");
   const [semestre,setSemestre] = useState("");
   const [activo, setActivo] = useState("");
   const [id_TipoSolicitante, setid_TipoSolicitante] = useState(null);
@@ -49,7 +49,7 @@ const Solicitante = () => {
   //FUNCION PARA REGISTRAR
   const add = ()=>{
     //VALIDACION DE CAMPOS VACIOS
-    if (!id_Solicitante || !nombre_Solicitante || !apellidoP_Solicitante || !apellidoM_Solicitante || !semestre || !activo || !id_TipoSolicitante || !id_ProgramaEducativo) {      
+    if (!id_Solicitante || !nombre_Solicitante || !apellidoP_Solicitante || !apellidoM_Solicitate || !semestre || !activo || !id_TipoSolicitante || !id_ProgramaEducativo) {      
       mostrarAdvertencia("Existen Obligatorios campos vacios");
       return;
     }
@@ -58,7 +58,7 @@ const Solicitante = () => {
         id_Solicitante:id_Solicitante,
         nombre_Solicitante:nombre_Solicitante,
         apellidoP_Solicitante:apellidoP_Solicitante,
-        apellidoM_Solicitante:apellidoM_Solicitante,
+        apellidoM_Solicitate:apellidoM_Solicitate,
         semestre:semestre,
         activo:activo,
         id_TipoSolicitante:id_TipoSolicitante,
@@ -109,7 +109,7 @@ const Solicitante = () => {
     setid_Solicitante("");
     setnombre_Solicitante("");    
     setapellidoP_Solicitante("");
-    setapellidoM_Solicitante("");
+    setapellidoM_Solicitate("");
     setSemestre("");
     setActivo("");    
     setid_TipoSolicitante(null);    
@@ -123,7 +123,7 @@ const Solicitante = () => {
     {field: 'id_Solicitante', header: 'Id' },
     {field: 'nombre_Solicitante', header: 'Nombre' },
     {field: 'apellidoP_Solicitante', header: 'Apellido P' },
-    {field: 'apellidoM_Solicitante', header: 'Apellido M' },
+    {field: 'apellidoM_Solicitate', header: 'Apellido M' },
     {field: 'semestre', header: 'Semestre' },
     {field: 'activo', header: 'Activo' },
     {field: 'id_TipoSolicitante', header: 'Tipo' },
@@ -145,7 +145,7 @@ const Solicitante = () => {
             item.id_Solicitante.toString().includes(value) ||
             item.nombre_Solicitante.toLowerCase().includes(value) ||
             item.apellidoP_Solicitante.toLowerCase().includes(value) ||
-            item.apellidoM_Solicitante.toLowerCase().includes(value) ||
+            item.apellidoM_Solicitate.toLowerCase().includes(value) ||
             item.semestre.toString().includes(value) ||            
             item.id_ProgramaEducativo.toString().includes(value) ||
             nombre_TipoSol.toLowerCase().includes(value) ||           
@@ -281,7 +281,7 @@ const Solicitante = () => {
             event.preventDefault();
           } 
           break;
-        case 'apellidoM_Solicitante':          
+        case 'apellidoM_Solicitate':          
           if (newValue.trim().length > 0 && newValue !== rowData[field]){                                    
                 rowData[field] = newValue;               
                 put(rowData);                       
@@ -385,17 +385,17 @@ const Solicitante = () => {
           </div>
           <div className="field col-4">
               <label>Apellido Materno</label>
-              <InputText type="text" keyfilter={/[a-zA-ZñÑ\s]/} value={apellidoM_Solicitante} maxLength={255}
+              <InputText type="text" keyfilter={/[a-zA-ZñÑ\s]/} value={apellidoM_Solicitate} maxLength={255}
                   onChange={(event)=>{
                     if (validarTexto(event.target.value)) {
-                      setapellidoM_Solicitante(event.target.value);
+                      setapellidoM_Solicitate(event.target.value);
                     }
                   }}  
                   placeholder="Ej.Perez" 
               className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full custom-input-text"/>              
           </div>
           <div className="field col-2">
-                <label>Id</label>
+                <label>Semestre</label>
                 <InputText type="text" keyfilter={/^[0-9]*$/} value={semestre} maxLength={1}
                     onChange={(event)=>{
                         if (validarNumero(event.target.value)) {
@@ -436,11 +436,11 @@ const Solicitante = () => {
               value={id_ProgramaEducativo} 
               options={ProgramasEducativos} 
               onChange={(e) => {
-                setProgramasEducativos(e.value);
+                setid_ProgramaEducativo(e.value);
               }} 
               //optionLabel="nombre_ProgramaEducativo" 
               optionLabel = {(option) => `${option.id_ProgramaEducativo} - ${option.nombre_ProgramaEducativo}`}
-              optionValue="id_TipoSolicitante" // Aquí especificamos que la clave del permiso se utilice como el valor de la opción seleccionada
+              optionValue="id_ProgramaEducativo" // Aquí especificamos que la clave del permiso se utilice como el valor de la opción seleccionada
               placeholder="Seleccione un Programa Educativo"               
             />
           </div>
