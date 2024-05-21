@@ -132,7 +132,6 @@ const UbicacionInventario = () => {
   
   //ACTIVAR EDICION DE CELDA
   const cellEditor = (options) => {
-    seteditando(true);
     return textEditor(options);
   };
 

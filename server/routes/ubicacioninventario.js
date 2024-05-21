@@ -10,10 +10,10 @@ const db = mysql.createConnection({
 });
 
 router.post("/registrarUbicacionInventario", (req, res) => {
-    const clave_UbicacionInventario = req.body.clave_UbicacionInventario;
-    const nombre_UbicacionInventario = req.body.nombre_UbicacionInventario;
+    const id_UbicacionInventario = req.body.id_UbicacionInventario;
+    const nombre_ubicacioninventario = req.body.nombre_ubicacioninventario;
 
-    db.query('SELECT * FROM ubicacioninventario WHERE id_UbicacionInventario = ?',[clave_UbicacionInventario], (err, results) => {
+    db.query('SELECT * FROM ubicacioninventario WHERE id_UbicacionInventario = ?',[id_UbicacionInventario], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
@@ -22,7 +22,7 @@ router.post("/registrarUbicacionInventario", (req, res) => {
         if(results.length > 0) {
             return res.status(400).send("La clave de la Ubicacion de Inventario ya existe");
         }
-        db.query('SELECT * FROM ubicacioninventario WHERE nombre_ubicacioninventario = ?',[nombre_UbicacionInventario], (err, results) => {
+        db.query('SELECT * FROM ubicacioninventario WHERE nombre_ubicacioninventario = ?',[nombre_ubicacioninventario], (err, results) => {
             if(err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");
@@ -33,7 +33,7 @@ router.post("/registrarUbicacionInventario", (req, res) => {
             }
             
             db.query('INSERT INTO ubicacioninventario(id_UbicacionInventario, nombre_ubicacioninventario) VALUES (?, ?)',
-            [clave_UbicacionInventario, nombre_UbicacionInventario], (err, result) => {
+            [id_UbicacionInventario, nombre_ubicacioninventario], (err, result) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Error interno del servidor");
@@ -55,9 +55,9 @@ router.get("/consultarUbicacionInventario", (req, res) => {
 });
 
 router.put("/modificarUbicacionInventario", (req, res) => {
-    const clave_UbicacionInventario = req.body.clave_UbicacionInventario;
-    const nombre_UbicacionInventario = req.body.nombre_UbicacionInventario;
-    db.query('SELECT * FROM ubicacioninventario WHERE nombre_ubicacioninventario = ? AND id_UbicacionInventario != ?',[nombre_UbicacionInventario,clave_UbicacionInventario], (err, results) => {
+    const id_UbicacionInventario = req.body.id_UbicacionInventario;
+    const nombre_ubicacioninventario = req.body.nombre_ubicacioninventario;
+    db.query('SELECT * FROM ubicacioninventario WHERE nombre_ubicacioninventario = ? AND id_UbicacionInventario != ?',[nombre_ubicacioninventario,id_UbicacionInventario], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
@@ -67,7 +67,7 @@ router.put("/modificarUbicacionInventario", (req, res) => {
             return res.status(401).send("El Nombre de la Ubicacion de Inventario ya existe");
         }
         db.query('UPDATE ubicacioninventario SET nombre_ubicacioninventario = ? WHERE id_UbicacionInventario = ?',
-        [nombre_UbicacionInventario,clave_UbicacionInventario],(err,result) =>{
+        [nombre_ubicacioninventario,id_UbicacionInventario],(err,result) =>{
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");
