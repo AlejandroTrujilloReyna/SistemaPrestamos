@@ -1,6 +1,6 @@
-// src/services/ModeloService.js
 import Axios from 'axios';
 
+// Código final después de resolver el conflicto
 const ModeloService = {
     registrarModelo: (datos) => {
         return Axios.post("http://localhost:3001/modelo/registrarModelo", datos);
