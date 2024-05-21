@@ -103,7 +103,7 @@ const Marca = () => {
   // COLUMNAS PARA LA TABLA
   const columns = [
     { field: 'clave_marca', header: 'Clave' },
-    { field: 'nombre_marca', header: 'Nombre' }
+    { field: 'nombre_Marca', header: 'Nombre' }
   ];
 
   // MANDAR A LLAMAR LOS DATOS EN CUANTO SE INGRESA A LA PAGINA
@@ -149,7 +149,7 @@ const Marca = () => {
     let { rowData, newValue, field, originalEvent: event } = e;
     switch (field) {
       // CADA CAMPO QUE SE PUEDA MODIFICAR ES UN CASO
-      case 'nombre_marca':
+      case 'nombre_Marca':
         if (newValue.trim().length > 0 && newValue !== rowData[field]) {
           rowData[field] = newValue;
           put(rowData);
@@ -219,7 +219,7 @@ const Marca = () => {
         <DataTable value={filtroMarca.length ? filtroMarca : marcaList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
             return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} 
-            editor={field === 'nombre_marca' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete} />;
+            editor={field === 'nombre_Marca' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete} />;
           })}
         </DataTable>
       </Panel>

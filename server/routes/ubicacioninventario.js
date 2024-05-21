@@ -44,7 +44,7 @@ router.post("/registrarUbicacionInventario", (req, res) => {
     });
 });
 
-/*router.get("/consultarUbicacionInventario", (req, res) => {
+router.get("/consultarUbicacionInventario", (req, res) => {
     db.query('SELECT * FROM ubicacioninventario', (err, results) => {
       if (err) {
         console.log(err);
@@ -57,7 +57,7 @@ router.post("/registrarUbicacionInventario", (req, res) => {
 router.put("/modificarUbicacionInventario", (req, res) => {
     const clave_UbicacionInventario = req.body.clave_UbicacionInventario;
     const nombre_UbicacionInventario = req.body.nombre_UbicacionInventario;
-    db.query('SELECT * FROM ubicacioninventario WHERE nombre_UbicacionInventario = ? AND clave_UbicacionInventario != ?',[nombre_UbicacionInventario,clave_UbicacionInventario], (err, results) => {
+    db.query('SELECT * FROM ubicacioninventario WHERE nombre_ubicacioninventario = ? AND id_UbicacionInventario != ?',[nombre_UbicacionInventario,clave_UbicacionInventario], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
@@ -66,8 +66,8 @@ router.put("/modificarUbicacionInventario", (req, res) => {
         if(results.length > 0) {
             return res.status(401).send("El Nombre de la Ubicacion de Inventario ya existe");
         }
-        db.query('UPDATE ubicacioninventario SET nombre_UbicacionInventario = ?, clave_UbicacionInventario = ?  WHERE clave_UbicacionInventario = ?',
-        [clave_UbicacionInventario,nombre_UbicacionInventario],(err,result) =>{
+        db.query('UPDATE ubicacioninventario SET nombre_ubicacioninventario = ? WHERE id_UbicacionInventario = ?',
+        [nombre_UbicacionInventario,clave_UbicacionInventario],(err,result) =>{
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");
@@ -75,6 +75,6 @@ router.put("/modificarUbicacionInventario", (req, res) => {
             res.status(200).send("Ubicacion de Inventario modificada con exito");        
         });
     });    
-});*/
+});
 
 module.exports = router;

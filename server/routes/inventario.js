@@ -14,7 +14,7 @@ router.post("/registrarInventario", (req, res) => {
     const nombre_Inventario = req.body.nombre_Inventario;
     const clave_UbicacionInventario = req.body.clave_UbicacionInventario;
 
-    db.query('SELECT * FROM inventario WHERE clave_Inventario = ?',[clave_Inventario], (err, results) => {
+    db.query('SELECT * FROM inventario WHERE id_Inventario = ?',[clave_Inventario], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
@@ -33,7 +33,7 @@ router.post("/registrarInventario", (req, res) => {
                 return res.status(401).send("El Nombre del Inventario ya existe");
             }
             
-            db.query('INSERT INTO inventario(clave_Inventario, nombre_Inventario, clave_UbicacionInventario) VALUES (?, ?, ?)',
+            db.query('INSERT INTO inventario(id_Inventario, nombre_Inventario, id_ubicacionInventario) VALUES (?, ?, ?)',
             [clave_Inventario, nombre_Inventario, clave_UbicacionInventario], (err, result) => {
                 if (err) {
                     console.log(err);
@@ -59,7 +59,7 @@ router.put("/modificarInventario", (req, res) => {
     const clave_Inventario = req.body.clave_Inventario;
     const nombre_Inventario = req.body.nombre_Inventario;
     const clave_UbicacionInventario = req.body.clave_UbicacionInventario;
-    db.query('SELECT * FROM inventario WHERE nombre_Inventario = ? AND clave_Inventario != ?',[nombre_Inventario,clave_Inventario], (err, results) => {
+    db.query('SELECT * FROM inventario WHERE nombre_Inventario = ? AND id_Inventario != ?',[nombre_Inventario,clave_Inventario], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
@@ -68,7 +68,7 @@ router.put("/modificarInventario", (req, res) => {
         if(results.length > 0) {
             return res.status(401).send("El Nombre del Inventario ya existe");
         }
-        db.query('UPDATE inventario SET nombre_Inventario = ?, clave_UbicacionInventario = ?  WHERE clave_Inventario = ?',
+        db.query('UPDATE inventario SET nombre_Inventario = ?, id_ubicacionInventario = ?  WHERE id_Inventario = ?',
         [nombre_Inventario,clave_UbicacionInventario, clave_Inventario],(err,result) =>{
             if (err) {
                 console.log(err);

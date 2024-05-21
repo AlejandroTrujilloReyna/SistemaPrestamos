@@ -10,6 +10,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import InventarioService from '../services/InventarioService';
+import UbicacionInventarioService from '../services/UbicacionInventarioService';
 
 const Inventario = () => {
   //VARIABLES PARA EL REGISTRO
@@ -138,6 +139,24 @@ const Inventario = () => {
     setfiltroinventario(filteredData);
   };
   
+  useEffect(() => {
+    UbicacionInventarioService.consultarUbicacionInventario()
+      .then(response => {
+        setubicacionesinventarios(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching unidades académicas:", error);
+      });
+  }, []);
+
+  const renderBody = (rowData, field) => {
+    if (field === 'id_UbicacionInventario') {
+      const unidad = ubicacionesinventarios.find((unidad) => unidad.clave_UbicacionInventario === rowData.clave_Inventario);
+      return unidad ? `${unidad.nombre_UbicacionInventario}` : '';
+    }else {
+      return rowData[field]; // Si no es 'clave_UnidadAcademica' ni 'clave_ProgramaEducativo', solo retorna el valor del campo
+    }
+  };
   //!!!EXTRAS DE MODIFICACION
   
   //ACTIVAR EDICION DE CELDA
@@ -227,8 +246,8 @@ const Inventario = () => {
               onChange={(e) => {
                 setclave_UbicacionInventario(e.value);
               }} 
-              optionLabel="nombre_UnidadAcademica" 
-              optionValue="clave_UnidadAcademica" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
+              optionLabel="nombre_ubicacioninventario" 
+              optionValue="id_UbicacionInventario" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
               placeholder="Seleccione una unidad académica" 
             />
           </div> 
@@ -245,7 +264,8 @@ const Inventario = () => {
       </div>  
         <DataTable value={filtroinventario.length ? filtroinventario :inventarioList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
-              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} editor={field === 'nombre_Inventario' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete}/>;
+              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} body ={(rowData) => renderBody(rowData,field)}
+              editor={field === 'nombre_Inventario' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete}/>;
           })}
         </DataTable>
       </Panel>              

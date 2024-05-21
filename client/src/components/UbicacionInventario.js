@@ -49,7 +49,7 @@ const UbicacionInventario = () => {
     }).then(response=>{//CASO EXITOSO
       if (response.status === 200) {
         mostrarExito("Registro exitoso");
-        //get();
+        get();
         limpiarCampos();
       }
     }).catch(error=>{//EXCEPCIONES
@@ -64,7 +64,7 @@ const UbicacionInventario = () => {
   }
 
   //FUNCION PARA LA CONSULTA
-  /*const get = ()=>{
+  const get = ()=>{
     UbicacionInventarioService.consultarUbicacionInventario().then((response)=>{//CASO EXITOSO
       setubicacioninventarioList(response.data);  
     }).catch(error=>{//EXCEPCIONES
@@ -88,7 +88,7 @@ const UbicacionInventario = () => {
         mostrarError("Error del sistema");
       }
     });
-  }*/
+  }
 
   //!!!EXTRAS DE REGISTRO
 
@@ -101,9 +101,9 @@ const UbicacionInventario = () => {
   //!!!EXTRAS DE CONSULTA
 
   //COLUMNAS PARA LA TABLA
-  /*const columns = [
-    { field: 'clave_UbicacionInventario', header: 'Clave' },
-    { field: 'nombre_UbicacionInventario', header: 'Nombre' },
+  const columns = [
+    { field: 'id_UbicacionInventario', header: 'Clave' },
+    { field: 'nombre_ubicacioninventario', header: 'Nombre' },
   ];
 
   //MANDAR A LLAMAR LOS DATOS EN CUANTO SE INGRESA A LA PAGINA
@@ -151,7 +151,7 @@ const UbicacionInventario = () => {
       let { rowData, newValue, field, originalEvent: event } = e;
       switch (field) {
         //CADA CAMPO QUE SE PUEDA MODIRICAR ES UN CASO
-        case 'nombre_UbicacionInventario':
+        case 'nombre_ubicacioninventario':
           if (newValue.trim().length > 0 && newValue !== rowData[field]){ 
             rowData[field] = newValue; put(rowData);
           }
@@ -163,7 +163,7 @@ const UbicacionInventario = () => {
         break;
       }
       seteditando(false);
-  };*/
+  };
   
   
   //!!!EXTRAS CAMPOS
@@ -215,7 +215,19 @@ const UbicacionInventario = () => {
         </div>        
       </Panel>
       {/*PANEL PARA LA CONSULTA DONDE SE INCLUYE LA MODIFICACION*/}
+      <Panel header="Consultar Ubicaciones" className='mt-3' toggleable>
+      <div className="mx-8 mb-4">
+        <InputText type="search" placeholder="Buscar..." maxLength={255} onChange={onSearch} 
+        className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none w-full" />  
+      </div>  
+      <DataTable value={filtroubicacioninventario.length ? filtroubicacioninventario :ubicacioninventarioList} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
       
+         {columns.map(({ field, header }) => {
+              return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '15%' }} 
+              editor={field === 'nombre_ubicacioninventario' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => seteditando(true)}/>;
+          })}
+        </DataTable>
+      </Panel>  
     </>
   )
 }

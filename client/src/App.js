@@ -8,6 +8,7 @@ import '/node_modules/primeflex/primeflex.css';
 import Menu from './components/Menu';
 import Inventario from './components/Inventario';
 import UbicacionInventario from './components/UbicacionInventario';
+import Marca from './components/Marca';
 
 function App() { //NOTA: USAR EL ROUTER
   return (
@@ -17,6 +18,8 @@ function App() { //NOTA: USAR EL ROUTER
         <Routes>
           <Route path='/Inventario' element={<Inventario/>}/>
           <Route path ='/UbicacionInventario' element={<UbicacionInventario/>}/>
+          <Route path ='/Marca' element={<Marca/>}/>
+
         </Routes>
       </BrowserRouter>    
       </div>
