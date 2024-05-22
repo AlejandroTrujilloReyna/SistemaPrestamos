@@ -10,44 +10,49 @@ const Menu = () => {
         {
             label: 'Permisos',
             icon: 'pi pi-building-columns',
-            command: () => {window.location.href='/PermisoUsuario';}
+            command: () => { window.location.href = '/PermisoUsuario'; }
         },
 
 
         {
             label: 'Programa Educativo',
             icon: 'pi pi-building-columns',
-            command: () => {window.location.href='/ProgramaEducativo';}
+            command: () => { window.location.href = '/ProgramaEducativo'; }
         },
 
         {
             label: 'Tipo de Solicitante',
             icon: 'pi pi-building-columns',
-            command: () => {window.location.href='/TipoSolicitante';}
+            command: () => { window.location.href = '/TipoSolicitante'; }
         },
 
         {
             label: 'Usuario',
             icon: 'pi pi-building-columns',
-            command: () => {window.location.href='/Usuario';}
+            command: () => { window.location.href = '/Usuario'; }
         },
         {
             label: 'Solicitante',
             icon: 'pi pi-building-columns',
-            command: () => {window.location.href='/Solicitante';}
-        }, 
+            command: () => { window.location.href = '/Solicitante'; }
+        },
         {
             label: 'Prestamo',
             icon: 'pi pi-building-columns',
-            command: () => {window.location.href='/Prestamo';}
-        } 
+            command: () => { window.location.href = '/Prestamo'; }
+        },
+        {
+            label: 'Login',
+            icon: 'pi pi-building-columns',
+            command: () => { window.location.href = '/Login'; }
+        }
     ];
-    const start = <img alt="logo" src="/images/image.png" height="40" className="mr-2"></img>;         
-  return (
-    <>
-        <Menubar model={items} start={start}/>                              
-    </>
-  )
+    const start = <img alt="logo" src="https://comunicacioninstitucional.uabc.mx/sites/default/files/inline-images/escudo-actualizado-2022.png" height="40" className="mr-2"></img>;
+    return (
+        <>
+            <Menubar model={items} start={start} />
+        </>
+    )
 }
 
 export default Menu

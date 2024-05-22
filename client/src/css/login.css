@@ -1,0 +1,84 @@
+body {
+    margin: 0%;
+    font-family: sans-serif;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .imagen-fim {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .contenedor-formulario {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    gap: 10px;
+  }
+  
+  .container-p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .inputsFormulario.p-inputtext {
+    border-radius: 10px;
+    height: 50px;
+    border: 1px solid gray;
+    width: 600px;
+}
+.inputsPwd .p-inputtext {
+  border-radius: 10px;
+  height: 50px;
+  border: 1px solid gray;
+  width: 600px;
+}
+  
+  .boton-inicio-sesion {
+    border: none;
+    background-color: #0362a2;
+    height: 50px;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    width: 600px;
+    margin-top: 10px;
+  }
+  
+  .checkboxFormulario {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .span-recordatorio {
+    margin-left: 10px;
+  }
+  
+  .container-uabcRectoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .imagen-uabcRectoria {
+    max-width: 100%;
+    height: 100%;
+  }
+  
+  .container-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+  }

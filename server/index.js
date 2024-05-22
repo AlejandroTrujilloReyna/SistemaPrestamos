@@ -25,6 +25,10 @@ app.use("/prestamo",prestamoRoutes );
 
 const materialRoutes = require("./routes/material");
 app.use("/material",materialRoutes );
+
+const loginRoutes = require("./routes/login");
+app.use("/login",loginRoutes );
+
 app.listen(3001,()=>{
     console.log("Corriendo en el puerto 3001");
 })
