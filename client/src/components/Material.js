@@ -15,6 +15,12 @@ const Material = () => {
   //VARIABLES PARA EL REGISTRO
   const [clave_Material,setclave_Material] = useState(0);
   const [nombre_Material,setnombre_Material] = useState("");
+  const [descripcion_Material,setdescripcion_Material] = useState("");
+  const [permiso_Prestamo,setpermiso_Prestamo] = useState("");
+  const [id_Categoria,setid_Categori] = useState(0);
+  const [id_Marca,setid_Marca] = useState(0);
+  const [id_Modelo,setid_Modelo] = useState(0);
+  const [id_Estado,setid_Estado] = useState(0);
   const [clave_UbicacionMaterial,setclave_UbicacionMaterial] = useState(null);
 
   //VARIABLES PARA LA CONSULTA
@@ -44,7 +50,7 @@ const Material = () => {
   //FUNCION PARA REGISTRAR
   const add = ()=>{
     //VALIDACION DE CAMPOS VACIOS
-    if (!clave_UbicacionMaterial || !clave_Material || !nombre_material) {
+    if (!clave_UbicacionMaterial || !clave_Material || !nombre_Material || !descripcion_Material || !permiso_Prestamo || !id_Categoria || !id_Marca || !id_Modelo || !id_Estado) {
       mostrarAdvertencia("Existen campos vacios");
       return;
     }
@@ -52,6 +58,12 @@ const Material = () => {
     MaterialService.registrarMaterial({
       clave_Material:clave_Material,
       nombre_Material:nombre_Material,
+      descripcion_Material:descripcion_Material,
+      permiso_Prestamo:permiso_Prestamo,
+      id_Categoria:id_Categoria,
+      id_Marca:id_Marca,
+      id_Modelo:id_Modelo,
+      id_Estado:id_Estado,
       clave_UbicacionMaterial:clave_UbicacionMaterial      
 
     }).then(response=>{//CASO EXITOSO
@@ -104,6 +116,12 @@ const Material = () => {
   const limpiarCampos = () =>{
     setclave_Material(0);
     setnombre_Material("");
+    setdescripcion_Material("");
+    setpermiso_Prestamo("");
+    setid_Categori(0);
+    setid_Marca(0);
+    setid_Modelo(0);
+    setid_Estado(0);
     setclave_UbicacionMaterial(0);
   }  
 
@@ -113,6 +131,12 @@ const Material = () => {
   const columns = [
     { field: 'clave_Material', header: 'Clave' },
     { field: 'nombre_Material', header: 'Nombre' },
+    { field: 'descripcion_Material', header: 'Descripcion'},
+    { field: 'permiso_Prestamo', header: 'Permiso Prestamo'},
+    { field: 'id_Categoria', header: 'Categoria'},
+    { field: 'id_Marca', header: 'Marca'},
+    { field: 'id_Modelo', header: 'Modelo'},
+    { field: 'id_Estado', header: 'Estado'},
     { field: 'clave_UbicacionMaterial', header: 'Ubicacion Material' }
   ];
 
@@ -132,7 +156,13 @@ const Material = () => {
     const filteredData = materialList.filter((item) => {
         return (
             item.clave_Material.toString().includes(value) ||
-            item.nombre_Material.toLowerCase().includes(value)
+            item.nombre_Material.toLowerCase().includes(value) ||
+            item.descripcion_Material.toLowerCase().includes(value) ||
+            item.permiso_Prestamo.toLowerCase().includes(value) ||
+            item.id_Categoria.toLowerCase().includes(value) ||
+            item.id_Marca.toLowerCase().includes(value) ||
+            item.id_Modelo.toLowerCase().includes(value) ||
+            item.id_Estado.toLowerCase().includes(value)
         );
     });
     setfiltromaterial(filteredData);
@@ -218,7 +248,67 @@ const Material = () => {
                   }
                 }}
               className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>              
-          </div>                             
+          </div>     
+          <div className="field col-2">
+              <label>Descripcion</label>
+              <InputText type="text" keyfilter="pint" value={descripcion_Material} maxLength={10}
+                onChange={(event) => {
+                  if (validarTexto(event.target.value)) {
+                    setdescripcion_Material(event.target.value);
+                  }
+                }}
+              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+          </div>                        
+          <div className="field col-2">
+              <label>Permiso Prestamo</label>
+              <InputText type="text" keyfilter="pint" value={permiso_Prestamo} maxLength={10}
+                onChange={(event) => {
+                  if (validarTexto(event.target.value)) {
+                    setpermiso_Prestamo(event.target.value);
+                  }
+                }}
+              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+          </div>
+          <div className="field col-2">
+              <label>Categoria</label>
+              <InputText type="text" keyfilter="pint" value={id_Categoria} maxLength={10}
+                onChange={(event) => {
+                  if (validarNumero(event.target.value)) {
+                    setid_Categori(event.target.value);
+                  }
+                }}
+              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+          </div>
+          <div className="field col-2">
+              <label>Marca</label>
+              <InputText type="text" keyfilter="pint" value={id_Marca} maxLength={10}
+                onChange={(event) => {
+                  if (validarNumero(event.target.value)) {
+                    setid_Marca(event.target.value);
+                  }
+                }}
+              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+          </div>
+          <div className="field col-2">
+              <label>Modelo</label>
+              <InputText type="text" keyfilter="pint" value={id_Modelo} maxLength={10}
+                onChange={(event) => {
+                  if (validarNumero(event.target.value)) {
+                    setid_Modelo(event.target.value);
+                  }
+                }}
+              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+          </div>
+          <div className="field col-2">
+              <label>Estado</label>
+              <InputText type="text" keyfilter="pint" value={id_Estado} maxLength={10}
+                onChange={(event) => {
+                  if (validarNumero(event.target.value)) {
+                    setid_Estado(event.target.value);
+                  }
+                }}
+              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+          </div>
           <div className="field col-6">
               <label>Ubicacion Material</label>
             <Dropdown className="text-base text-color surface-overlay p-0 m-0 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
