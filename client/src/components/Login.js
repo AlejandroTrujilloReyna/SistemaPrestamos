@@ -55,9 +55,6 @@ const Login = () => {
               className="inputsPwd"
               placeholder="*********"
               toggleMask />
-
-
-
             <div>
               <input
                 className="checkboxFormulario"
