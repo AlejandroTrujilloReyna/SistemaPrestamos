@@ -11,6 +11,9 @@ app.use("/ubicacioninventario", ubicacioninventarioRoutes);
 const inventarioRoutes = require("./routes/inventario");
 app.use("/inventario", inventarioRoutes);
 
+const categoriaRoutes = require("./routes/categoria");
+app.use("/categoria", categoriaRoutes);
+
 app.listen(3001,()=>{
     console.log("Corriendo en el puerto 3001");
 })
