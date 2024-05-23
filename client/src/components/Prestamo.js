@@ -102,7 +102,8 @@ const add = ()=>{
         if (response.data && response.data.id_Prestamo) {
             // Obtener el ID del préstamo desde la respuesta
             //const idPrestamo = response.data.id_Prestamo;
-            id_Prestamo = response.data.id_Prestamo;            
+            id_Prestamo = response.data.id_Prestamo;   
+            addMat();         
             //setprestamoEsp(id);
             // Mostrar mensaje de éxito junto con el ID del préstamo
             mostrarExito(`Registro Exitoso. ID del préstamo: ${id_Prestamo} ${MaterialSeleccionado[0]}`);

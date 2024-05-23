@@ -10,6 +10,7 @@ import Usuario from './components/Usuario';import ProgramaEducativo from './comp
 import TipoSolicitante from './components/TipoSolicitante';
 import Solicitante from './components/Solicitante';
 import Prestamo from './components/Prestamo';
+import PrestamoN from './components/PrestamoN';
 
 function App() { //NOTA: USAR EL ROUTER
   return (
@@ -23,6 +24,7 @@ function App() { //NOTA: USAR EL ROUTER
           <Route path='/TipoSolicitante' element={<TipoSolicitante/>}/>
           <Route path='/Solicitante' element={<Solicitante/>}/>
           <Route path='/Prestamo' element={<Prestamo/>}/>
+          <Route path='/PrestamoN' element={<PrestamoN/>}/>
         </Routes>
       </BrowserRouter>
     </div>
