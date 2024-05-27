@@ -45,7 +45,12 @@ const Menu = () => {
             label: 'Cerrar session',
             icon: 'pi pi-building-columns',
             command: () => { window.location.href = '/Login'; }
-        }
+        },
+        {
+            label: 'PrestamoN',
+            icon: 'pi pi-building-columns',
+            command: () => {window.location.href='/PrestamoN';}
+        } 
     ];
     const start = <img alt="logo" src="https://comunicacioninstitucional.uabc.mx/wp-content/uploads/2024/03/escudo-actualizado-2022-300ox.png" height="40" className="mr-2"></img>;
     return (

@@ -16,7 +16,7 @@ const Prestamo = () => {
 
     //VARIABLES PARA EL REGISTRO  
     let id_Prestamo=0;
-  const [fechaH_Prestamo,setfechaH_Prestamo] = useState("");
+  //const [fechaH_Prestamo,setfechaH_Prestamo] = useState("");
   const [fechaH_Devolucion,setfechaH_Devolucion] = useState(null);
   //const [id_Usuario,setid_Usuario] = useState("");
   const [id_Solicitante,setid_Solicitante] = useState("");
@@ -51,7 +51,7 @@ const Prestamo = () => {
 
   //MANDAR A LLAMAR A LA LISTA DE MATERIAL 
   useEffect(() => {
-    MaterialServices.consultarMaterial()
+    MaterialServices.consultarMaterialSinPrestar()
       .then(response => {
         setmaterialList(response.data);
       })
@@ -91,8 +91,8 @@ const add = ()=>{
     }    
     //MANDAR A LLAMAR AL REGISTRO SERVICE
     PrestamoServices.registrarPrestamo({
-        fechaH_Prestamo:fechaH_Prestamo,
-        fechaH_Devolucion:fechaH_Devolucion,
+        fechaH_Prestamo:obtenerFechaHoraActual(),
+        fechaH_Devolucion:null,
         id_Usuario:id_Usuario,
         id_Solicitante:id_Solicitante        
     }).then(response=>{//CASO EXITOSO
@@ -102,7 +102,8 @@ const add = ()=>{
         if (response.data && response.data.id_Prestamo) {
             // Obtener el ID del préstamo desde la respuesta
             //const idPrestamo = response.data.id_Prestamo;
-            id_Prestamo = response.data.id_Prestamo;            
+            id_Prestamo = response.data.id_Prestamo;   
+            addMat();         
             //setprestamoEsp(id);
             // Mostrar mensaje de éxito junto con el ID del préstamo
             mostrarExito(`Registro Exitoso. ID del préstamo: ${id_Prestamo} ${MaterialSeleccionado[0]}`);
@@ -140,12 +141,12 @@ const add = ()=>{
         return;
     }
     for (let i = 0; i < MaterialSeleccionado.length; i++) {
-        const id_Material = MaterialSeleccionado[i];
+        let id_Material = MaterialSeleccionado[i];
         const Prestado = 1;
         //MANDAR A LLAMAR AL REGISTRO SERVICE
-        mostrarAdvertencia("id: "+id_Material+" idp: "+id_Prestamo);
+        mostrarAdvertencia("id: "+id_Material+" idp: "+id_Prestamo+" | "+MaterialSeleccionado[0]);
         MaterialPrestamoServices.registrarMaterialPrestamoDOS({
-            id_Material:id_Material,
+          id_Material:MaterialSeleccionado[i],
             id_Prestamo:id_Prestamo,
             Prestado:Prestado     
         }).then(response=>{//CASO EXITOSO
@@ -222,12 +223,7 @@ return (
               optionValue="id_Material" // Aquí especificamos que la clave del Material se utilice como el valor de la opción seleccionada
               placeholder="Seleccione al Solicitante"               
             />
-        </div> 
-        <div className="field col-3">            
-            <label>{fechaH_Prestamo}</label>
-            <Button label="Fecha Prestamo" onClick={() => setfechaH_Prestamo(obtenerFechaHoraActual())} className="p-button-success" />
-        </div> 
-         
+        </div>          
         <div className="field col-3">            
             <label>{fechaH_Devolucion}</label>
             <Button label="Fecha Devolucion" onClick={() => setfechaH_Devolucion(obtenerFechaHoraActual())} className="p-button-success" />

@@ -12,6 +12,7 @@ import TipoSolicitante from './components/TipoSolicitante';
 import Solicitante from './components/Solicitante';
 import Prestamo from './components/Prestamo';
 import Login from './components/Login';
+import PrestamoN from './components/PrestamoN';
 
 function App() {
 
@@ -42,6 +43,7 @@ function Rutas() {//NOTA: USAR EL ROUTER
         <Route path='/Solicitante' element={<Solicitante />} />
         <Route path='/Prestamo' element={<Prestamo />} />
         <Route path='/Login' element={<Login />} />
+        
       </Routes>
 
     </div>
