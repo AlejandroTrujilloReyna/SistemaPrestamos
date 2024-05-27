@@ -37,7 +37,7 @@ const PrestamoN = () => {
     });    
   //VARIABLES PARA EL REGISTRO
   var id_Prestamo=0;
-  //const [id_Prestamo,setid_Prestamo] = useState("");
+  const [id_PrestamoD,setid_PrestamoD] = useState("");
   const [id_Usuario,setid_usuario] = useState("");
   const [id_Solicitante,setid_Solicitante] = useState("");  
   //VARIABLES PARA LA CONSULTA
@@ -75,57 +75,41 @@ const PrestamoN = () => {
         // Actualizar el estado con la fecha y hora actual en formato MySQL
         return fechaHoraMySQL;
     };
-//FUNCION PARA REGISTRAR
-const add = ()=>{
-    //VALIDACION DE CAMPOS VACIOS
-    if (!id_Usuario || !id_Solicitante || !MaterialSeleccionado) {      
-      mostrarAdvertencia("Existen Campos Obligatorios campos vacios");
-      return;
-    }    
-    //MANDAR A LLAMAR AL REGISTRO SERVICE
-    PrestamoServices.registrarPrestamo({
-        fechaH_Prestamo:obtenerFechaHoraActual(),
-        fechaH_Devolucion:null,
-        id_Usuario:id_Usuario,
-        id_Solicitante:id_Solicitante        
-    }).then(response=>{//CASO EXITOSO
-      if (response.status === 200) {
-       // mostrarExito("Registro Exitoso");
-        // Si la respuesta contiene el ID del préstamo
-        if (response.data && response.data.id_Prestamo) {
-            // Obtener el ID del préstamo desde la respuesta
-            //const idPrestamo = response.data.id_Prestamo;
-            id_Prestamo = response.data.id_Prestamo;   
-            addMat();         
-            //setprestamoEsp(id);
-            // Mostrar mensaje de éxito junto con el ID del préstamo
-            //mostrarExito(`Registro Exitoso. ID del préstamo: ${id_Prestamo} ${MaterialSeleccionado[0]}`);
+    //FUNCION PARA REGISTRAR
+    const add = ()=>{
+        //VALIDACION DE CAMPOS VACIOS
+        if (!id_Usuario || !id_Solicitante || !MaterialSeleccionado) {      
+        mostrarAdvertencia("Existen Campos Obligatorios campos vacios");
+        return;
+        }    
+        //MANDAR A LLAMAR AL REGISTRO SERVICE
+        PrestamoServices.registrarPrestamo({
+            fechaH_Prestamo:obtenerFechaHoraActual(),
+            fechaH_Devolucion:null,
+            id_Usuario:id_Usuario,
+            id_Solicitante:id_Solicitante        
+        }).then(response=>{//CASO EXITOSO
+        if (response.status === 200) {
+        // mostrarExito("Registro Exitoso");
+            // Si la respuesta contiene el ID del préstamo
+            if (response.data && response.data.id_Prestamo) {
+                // Obtener el ID del préstamo desde la respuesta
+                //const idPrestamo = response.data.id_Prestamo;
+                id_Prestamo = response.data.id_Prestamo;   
+                addMat();         
+                //setprestamoEsp(id);
+                // Mostrar mensaje de éxito junto con el ID del préstamo
+                //mostrarExito(`Registro Exitoso. ID del préstamo: ${id_Prestamo} ${MaterialSeleccionado[0]}`);
+            }
         }
-      }
-    }).catch(error=>{//EXCEPCIONES
-      if(error.response.status === 401){
-        mostrarAdvertencia("ID ya existente");        
-      }else if(error.response.status === 500){  
-        mostrarError("Error interno del servidor");
-      }     
-    });
-    
-    // CONSULTA PARA SABER EL ID DEL PRESTAMO ACTUAL
-    /*PrestamoServices.consultarEspecifica({
-        fechaH_Prestamo:fechaH_Prestamo,
-        fechaH_Devolucion:fechaH_Devolucion,
-        id_Usuario:id_Usuario,
-        id_Solicitante:id_Solicitante        
-    }).then((response)=>{//CASO EXITOSO
-        console.error(response.data);
-        setprestamoEsp(response.data);      
-    }).catch(error=>{//EXCEPCIONES
-      if (error.response.status === 500) {
-        //mostrarError("Error del sistema");
-      }
-    }); */
-        
-  } 
+        }).catch(error=>{//EXCEPCIONES
+        if(error.response.status === 401){
+            mostrarAdvertencia("ID ya existente");        
+        }else if(error.response.status === 500){  
+            mostrarError("Error interno del servidor");
+        }     
+        });        
+    } 
 
   const addMat = ()=>{
     // Validar que se haya seleccionado al menos un material
@@ -171,6 +155,26 @@ const add = ()=>{
     });    
   }  
   
+  const devolverPrestamo = ()=>{
+    PrestamoServices.devolverPrestamo({
+        id_Prestamo: id_PrestamoD,
+        fechaH_Devolucion: obtenerFechaHoraActual,        
+      }
+      ).then(response => {//CASO EXITOSO
+        if (response.status === 200) {
+          mostrarExito("Devolucion Exitosa");          
+          get();
+        }
+      }).catch(error => {//EXCEPCIONES
+        if (error.response.status === 401) {
+          mostrarAdvertencia("Nombre ya Existente en el Edificio");
+          get();
+        } else if (error.response.status === 500) {
+          mostrarError("Error del sistema");
+        }
+      })
+
+  }
 
   //!!!EXTRAS DE REGISTRO
 
@@ -178,7 +182,8 @@ const add = ()=>{
   const limpiarCampos = () =>{
     id_Prestamo=0;
     setid_usuario("");
-    setid_Solicitante("");       
+    setid_Solicitante("");
+    setMaterialSeleccionado([]);       
   };
   
   
@@ -244,6 +249,7 @@ const add = ()=>{
   // Inicializa las constantes de la modificacion
   const inicializar = (prestamo) => {
     id_Prestamo=prestamo.id_Prestamo;
+    setid_PrestamoD(prestamo.id_Prestamo);
     setid_Solicitante(prestamo.id_Solicitante);
     setid_usuario(prestamo.id_Usuario);    
   }
@@ -257,10 +263,9 @@ const add = ()=>{
   );
 
   // Funcion para iniciar con Edición
-  const editSala = (sala) => {
-    inicializar(sala);    
-    setMostrarDialog(true);
-    seteditando(true);
+  const devolver = (prestamo) => {
+    inicializar(prestamo);    
+    devolverPrestamo(prestamo);
   };
   
   // Funcion para exportar en formato de excel
@@ -341,23 +346,11 @@ const add = ()=>{
           rounded
           outlined
           className="m-1"
-          onClick={() => editSala(rowData)}
+          onClick={() => devolver(rowData)}
         />        
       </React.Fragment>
     );
   };
-
-  /*const toggleFilter = ({ value, onChange }) => {
-    return(<ToggleButton
-      id="vtraslape"
-      onLabel="Si"
-      onIcon="pi pi-check"
-      offIcon="pi pi-times"
-      checked={validar_Traslape === 1}
-      onChange={(e) => setvalidar_Traslape(e.value ? 1 : 0)}
-      className="w-8rem"
-    />);
-  };*/
 
   // Funcion Necesaria para filtrado
   const onFilter = (event) => {
@@ -422,9 +415,9 @@ const add = ()=>{
             </div>
         </div>                   
         <div className="field col">
-            <label htmlFor="Solicitante" className="font-bold">Solicitante*</label>
+            <label htmlFor="Material" className="font-bold">Material*</label>
             <MultiSelect 
-            id="Solicitante"
+            id="Material"
             value={MaterialSeleccionado} 
             options={materialList} 
             onChange={(e) => {

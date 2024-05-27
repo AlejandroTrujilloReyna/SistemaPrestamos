@@ -48,20 +48,48 @@ const db = require("../db");
     });
     
     
-    router.put("/modificarPrestamo", (req, res) => {
+    router.put("/DevolverPrestamo", (req, res) => {
         const id_Prestamo = req.body.id_Prestamo;
-        //const fechaH_Prestamo = req.body.fechaH_Prestamo;
         const fechaH_Devolucion = req.body.fechaH_Devolucion;
-        //const id_Usuario = req.body.id_Usuario;
-        //const id_Solicitante = req.body.id_Solicitante;
-        db.query('UPDATE prestamo SET fechaH_Devolucion=? WHERE id_Prestamo=?',
-            [fechaH_Devolucion, id_Prestamo],(err,result) =>{
+    
+        // Iniciar una transacción
+        db.beginTransaction((err) => {
             if (err) {
-                console.log(err);
+                console.error("Error al iniciar la transacción:", err);
                 return res.status(500).send("Error interno del servidor");
             }
-            res.status(200).send("Prestamo modificado con exito");        
-        });        
-    });    
+    
+            // Primera consulta: actualizar fechaH_Devolucion en la tabla prestamo
+            db.query('UPDATE prestamo SET fechaH_Devolucion = ? WHERE id_Prestamo = ?', [fechaH_Devolucion, id_Prestamo], (err, result) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error("Error al actualizar prestamo:", err);
+                        return res.status(500).send("Error interno del servidor");
+                    });
+                }
+    
+                // Segunda consulta: actualizar Prestado a 0 en la tabla conjuntomaterialprestamo
+                db.query('UPDATE conjuntomaterialprestamo SET Prestado = 0 WHERE id_Prestamo = ?', [id_Prestamo], (err, result) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error("Error al actualizar conjuntomaterialprestamo:", err);
+                            return res.status(500).send("Error interno del servidor");
+                        });
+                    }
+    
+                    // Confirmar la transacción si ambas consultas son exitosas
+                    db.commit((err) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                console.error("Error al confirmar la transacción:", err);
+                                return res.status(500).send("Error interno del servidor");
+                            });
+                        }
+                        res.status(200).send("Préstamo modificado con éxito");
+                    });
+                });
+            });
+        });
+    });
 
 module.exports = router;
