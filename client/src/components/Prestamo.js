@@ -20,7 +20,7 @@ const Prestamo = () => {
   const [fechaH_Devolucion,setfechaH_Devolucion] = useState(null);
   //const [id_Usuario,setid_Usuario] = useState("");
   const [id_Solicitante,setid_Solicitante] = useState("");
-  const [id_Usuario,setid_Usuario] = useState("");
+  const [id_Usuario,setid_Usuario] = useState(sessionStorage.getItem('id'));
   //const [id_Material,setid_Material,] = useState("");
   //VARIABLES PARA LA CONSULTA
  // const [prestamosList,setprestamosList] = useState([]);
