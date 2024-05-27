@@ -19,7 +19,6 @@ router.get("/validardatos", (req, res) => {
             if(results.length > 1){
                 return res.status(402).send("Sin resultados");
             }
-            console.log(results);
             res.status(200).json(results);
         });
 

@@ -30,6 +30,10 @@ const Login = () => {
       }
     })
   }
+  const isLogged = Boolean(sessionStorage.getItem('id'));
+  if (isLogged) {
+    sessionStorage.clear();
+  }
 
   return (
     <>
@@ -45,16 +49,15 @@ const Login = () => {
               className="inputsFormulario"
               placeholder="Ingresa tu email"
             />
-
             <label>Password</label>
             <Password
               value={password}
               onChange={(e) => setpwd(e.target.value)}
               feedback={false}
-              tabIndex={1}
               className="inputsPwd"
               placeholder="*********"
-              toggleMask />
+              toggleMask 
+              />
             <div>
               <input
                 className="checkboxFormulario"
