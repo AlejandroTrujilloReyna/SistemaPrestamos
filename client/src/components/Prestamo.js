@@ -20,7 +20,7 @@ const Prestamo = () => {
   const [fechaH_Devolucion,setfechaH_Devolucion] = useState(null);
   //const [id_Usuario,setid_Usuario] = useState("");
   const [id_Solicitante,setid_Solicitante] = useState("");
-  const [id_Usuario,setid_Usuario] = useState(sessionStorage.getItem('id'));
+  const id_Usuario = sessionStorage.getItem('id');
   //const [id_Material,setid_Material,] = useState("");
   //VARIABLES PARA LA CONSULTA
  // const [prestamosList,setprestamosList] = useState([]);
@@ -182,20 +182,8 @@ return (
       {/*PANEL PARA EL REGISTRO*/}
       <Panel header="Registrar Programa Educativo" className='mt-3' toggleable>        
         <div className="formgrid grid mx-8 justify-content-center">
-        <div className="field col-3">
-          <label>Usuario</label>          
-            <Dropdown className="text-base text-color surface-overlay p-0 m-0 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full custom-input-text"
-              value={id_Usuario} 
-              options={usuariosList} 
-              onChange={(e) => {
-                setid_Usuario(e.value);
-              }}    
-              filter           
-              optionLabel = {(option) => `${option.id_Usuario} - ${option.nombre_Usuario}`}
-              optionValue="id_Usuario" // Aquí especificamos que la clave del permiso se utilice como el valor de la opción seleccionada
-              placeholder="Seleccione al Usuario"               
-            />
-        </div>
+        {/* <div className="field col-3">
+        </div> */}
         <div className="field col-3">
           <label>Solicitante</label>          
             <Dropdown className="text-base text-color surface-overlay p-0 m-0 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full custom-input-text"
@@ -230,10 +218,7 @@ return (
         </div>
         <div className="field col-8">
           <Button label="Guardar" onClick={add} className="p-button-success" />
-        </div>   
-        <div className="field col-8">
-          <Button label="Guardar" onClick={addMat} className="p-button-success" />
-        </div>           
+        </div>         
         </div>
         <div className="mx-8 mt-4">
          {/* <Button label="Guardar" onClick={add} className="p-button-success" />*/}

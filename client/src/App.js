@@ -42,8 +42,8 @@ function Rutas() {//NOTA: USAR EL ROUTER
         <Route path='/TipoSolicitante' element={<TipoSolicitante />} />
         <Route path='/Solicitante' element={<Solicitante />} />
         <Route path='/Prestamo' element={<Prestamo />} />
+        <Route path='/PrestamoN' element={<PrestamoN/>}/>
         <Route path='/Login' element={<Login />} />
-        
       </Routes>
 
     </div>
