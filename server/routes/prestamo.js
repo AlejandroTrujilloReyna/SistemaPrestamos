@@ -23,7 +23,7 @@ router.post("/registrarPrestamo", (req, res) => {
 });
 
 router.get("/consultarPrestamoGeneral", (req, res) => {
-    db.query('SELECT * FROM prestamo ORDER BY id_Prestamo', (err, results) => {
+    db.query('SELECT p.*, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo DESC', (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");

@@ -11,6 +11,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from 'primereact/dropdown';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Toast } from 'primereact/toast';
+import { Tag } from 'primereact/tag';
 import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { IconField } from 'primereact/iconfield';
@@ -285,7 +286,8 @@ const PrestamoN = () => {
     { field: 'fechaH_Prestamo', header: 'Prestamo' },
     { field: 'fechaH_Devolucion', header: 'Devolucion' },
     { field: 'id_Usuario', header: 'Prestador', },
-    { field: 'id_Solicitante', header: 'Solicitante' }
+    { field: 'id_Solicitante', header: 'Solicitante' },
+    { field: 'conjuntoMaterial', header: 'Materiales' }
   ];
 
   //FUNCION PARA QUE SE MUESTRE INFORMACION ESPECIFICA DE LAS LLAVES FORANEAS
@@ -296,6 +298,10 @@ const PrestamoN = () => {
     } else if (field === 'id_Solicitante') {
       const solicitan = solicitantesList.find((solicitan) => solicitan.id_Solicitante === rowData.id_Solicitante);
       return solicitan ? `${solicitan.nombre_Solicitante} ${solicitan.apellidoP_Solicitante} ${solicitan.apellidoM_Solicitate}` : '';
+    }else if (field === 'conjuntoMaterial' && rowData.conjuntoMaterial) {
+      return rowData.conjuntoMaterial.split(',').map((unidad, index) => (
+        <Tag key={index} value={unidad.trim()} className="mr-2 mb-2" />
+      ));      
     } else {
       return rowData[field]; // Si no es 'clave_UnidadAcademica' ni 'clave_ProgramaEducativo', solo retorna el valor del campo
     }
@@ -401,15 +407,14 @@ const PrestamoN = () => {
       <Toolbar className="mt-3" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
       {/*Tabla de Contenido*/}
       <div className="card">
-        <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}
-          filterDisplay="row"
-          onFilter={onFilter}
+        <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}          
+          
           filters={lazyState.filters}
 
           header={header}>
           {columns.map(({ field, header }) => {
             return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '20%' }} body={(rowData) => renderBody(rowData, field)}
-              filter filterPlaceholder="Buscar" />;
+               />;
           })}
           <Column
             body={accionesTabla}
