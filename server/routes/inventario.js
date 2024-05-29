@@ -14,16 +14,7 @@ router.post("/registrarInventario", (req, res) => {
     const nombre_Inventario = req.body.nombre_Inventario;
     const id_ubicacionInventario = req.body.id_ubicacionInventario;
 
-    db.query('SELECT * FROM inventario WHERE id_Inventario = ?',[id_Inventario], (err, results) => {
-        if(err) {
-            console.log(err);
-            return res.status(500).send("Error interno del servidor");
-        }
-
-        if(results.length > 0) {
-            return res.status(400).send("La clave del Inventario ya existe");
-        }
-        db.query('SELECT * FROM inventario WHERE nombre_Inventario = ?',[nombre_Inventario], (err, results) => {
+        db.query('SELECT * FROM inventario WHERE id_Inventario = ?',[id_Inventario], (err, results) => {
             if(err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");
@@ -32,8 +23,16 @@ router.post("/registrarInventario", (req, res) => {
             if(results.length > 0) {
                 return res.status(401).send("El Nombre del Inventario ya existe");
             }
-            
-            db.query('INSERT INTO inventario(id_Inventario, nombre_Inventario, id_ubicacionInventario) VALUES (?, ?, ?)',
+            db.query('SELECT * FROM inventario WHERE nombre_Inventario = ?',[nombre_Inventario], (err, results) => {
+                if(err) {
+                    console.log(err);
+                    return res.status(500).send("Error interno del servidor");
+                }
+        
+                if(results.length > 0) {
+                    return res.status(401).send("El Nombre del Programa Educativo ya existe");
+                }            
+            db.query('INSERT INTO inventario(id_Inventario, nombre_Inventario, id_UbicacionInventario) VALUES (?, ?, ?)',
             [id_Inventario, nombre_Inventario, id_ubicacionInventario], (err, result) => {
                 if (err) {
                     console.log(err);
@@ -42,7 +41,7 @@ router.post("/registrarInventario", (req, res) => {
                 res.status(200).send("Programa educativo registrado con éxito");
             });  
         });  
-    });
+    });  
 });
 
 router.get("/consultarInventario", (req, res) => {
@@ -68,7 +67,7 @@ router.put("/modificarInventario", (req, res) => {
         if(results.length > 0) {
             return res.status(401).send("El Nombre del Inventario ya existe");
         }
-        db.query('UPDATE inventario SET nombre_Inventario = ?, id_ubicacionInventario = ?  WHERE id_Inventario = ?',
+        db.query('UPDATE inventario SET nombre_Inventario = ?, id_UbicacionInventario = ?  WHERE id_Inventario = ?',
         [nombre_Inventario,id_ubicacionInventario, id_Inventario],(err,result) =>{
             if (err) {
                 console.log(err);

@@ -6,14 +6,14 @@ const db = mysql.createConnection({
     host:"localhost",
     user:"root",
     password:"root",
-    database:"dbsistemaprestamos"
+    database:"bdsistemaprestamos"
 });
 
 router.post("/registrarCategoria", (req, res) => {
     const id_Categoria = req.body.id_Categoria;
     const nombre_Categoria = req.body.nombre_Categoria;
 
-    db.query('SELECT * FROM ubicacioninventario WHERE id_UbicacionInventario = ?',[id_Categoria], (err, results) => {
+    db.query('SELECT * FROM categoria WHERE id_Categoria = ?',[id_Categoria], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");

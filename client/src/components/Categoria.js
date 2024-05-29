@@ -12,7 +12,6 @@ import CategoriaService from '../services/CategoriaService';
 
 const Categoria = () => {
   //VARIABLES PARA EL REGISTRO
-  const [id_Categoria,setid_Categoria] = useState(0);
   const [nombre_Categoria,setnombre_Categoria] = useState("");
   //VARIABLES PARA LA CONSULTA
   const [CategoriaList,setCategoriaList] = useState([]);
@@ -38,13 +37,12 @@ const Categoria = () => {
   //FUNCION PARA REGISTRAR
   const add = ()=>{
     //VALIDACION DE CAMPOS VACIOS
-    if (!id_Categoria || !nombre_Categoria) {
+    if (!nombre_Categoria) {
       mostrarAdvertencia("Existen campos vacios");
       return;
     }
     //MANDAR A LLAMAR AL REGISTRO SERVICE
     CategoriaService.registrarCategoria({
-      id_Categoria:id_Categoria,
       nombre_Categoria:nombre_Categoria
     }).then(response=>{//CASO EXITOSO
       if (response.status === 200) {
@@ -94,7 +92,6 @@ const Categoria = () => {
 
   //FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () =>{
-    setid_Categoria(0);
     setnombre_Categoria("");
   }  
 
@@ -174,13 +171,6 @@ const Categoria = () => {
     return  regex.test(value);
   };
 
-  const validarNumero = (value) => {
-    // Expresión regular para validar números enteros positivos
-    const regex = /^[0-9]\d*$/;
-    // Verificar si el valor coincide con la expresión regular
-    return value==='' || regex.test(value);
-  };
-
   return (
     <>
     {/*APARICION DE LOS MENSAJES (TOAST)*/}
@@ -188,16 +178,6 @@ const Categoria = () => {
       {/*PANEL PARA EL REGISTRO*/}
       <Panel header="Registrar Categoria" className='mt-3' toggleable>
         <div className="formgrid grid mx-8">
-          <div className="field col-2">
-              <label>Clave</label>
-              <InputText type="text" keyfilter="pint" value={id_Categoria} maxLength={10}
-                onChange={(event) => {
-                  if (validarNumero(event.target.value)) {
-                    setid_Categoria(event.target.value);
-                  }
-                }}
-              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-          </div>
           <div className="field col-10">
               <label>Tipo de categoria</label>
               <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={nombre_Categoria} maxLength={255}

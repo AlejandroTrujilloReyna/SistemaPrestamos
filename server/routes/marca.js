@@ -12,24 +12,35 @@ const db = mysql.createConnection({
 
 // Registrar 
 router.post("/registrarMarca", (req, res) => {
+    const id_Marca = req.body.id_Marca;
     const nombre_Marca = req.body.nombre_Marca;
 
-    db.query('SELECT * FROM marca WHERE nombre_Marca = ?', [nombre_Marca], (err, results) => {
+    db.query('SELECT * FROM marca WHERE id_Marca = ?', [id_Marca], (err, results) => {
         if(err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
         }
 
         if(results.length > 0) {
-            return res.status(400).send("El nombre de la marca ya existe");
+            return res.status(400).send("El id de la marca ya existe");
         }
-        
-        db.query('INSERT INTO marca(nombre_Marca) VALUES (?)', [nombre_Marca], (err, result) => {
-            if (err) {
+        db.query('SELECT * FROM marca WHERE nombre_Marca = ?', [nombre_Marca], (err, results) => {
+            if(err) {
                 console.log(err);
                 return res.status(500).send("Error interno del servidor");
             }
-            res.status(200).send("Marca registrada con éxito");
+
+            if(results.length > 0) {
+                return res.status(400).send("El nombre de la marca ya existe");
+            }
+            
+            db.query('INSERT INTO marca(id_Marca, nombre_Marca) VALUES (?,?)', [id_Marca, nombre_Marca], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Error interno del servidor");
+                }
+                res.status(200).send("Marca registrada con éxito");
+            });
         });
     });
 });
@@ -57,7 +68,7 @@ router.put("/modificarMarca", (req, res) => {
         }
 
         if(results.length > 0) {
-            return res.status(400).send("El nombre de la marca ya existe");
+            return res.status(401).send("El nombre de la marca ya existe");
         }
         
         db.query('UPDATE marca SET nombre_Marca = ? WHERE id_Marca = ?', [nombre_Marca, id_Marca], (err, result) => {

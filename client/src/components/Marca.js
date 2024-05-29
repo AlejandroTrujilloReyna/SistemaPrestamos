@@ -10,8 +10,7 @@ import MarcaService from '../services/MarcaService';
 
 const Marca = () => {
   // VARIABLES PARA EL REGISTRO
-  const [clave_marca, setClave_Marca] = useState(0);
-  const [nombre_marca, setNombre_Marca] = useState("");
+  const [nombre_Marca, setnombre_Marca] = useState("");
 
   // VARIABLES PARA LA CONSULTA
   const [marcaList, setMarcaList] = useState([]);
@@ -41,15 +40,14 @@ const Marca = () => {
   // FUNCION PARA REGISTRAR
   const add = () => {
     // VALIDACION DE CAMPOS VACIOS
-    if (!clave_marca || !nombre_marca) {
+    if (!nombre_Marca) {
       mostrarAdvertencia("Existen campos vacíos");
       return;
     }
 
     // MANDAR A LLAMAR AL REGISTRO SERVICE
     MarcaService.registrarMarca({
-      clave_marca: clave_marca,
-      nombre_marca: nombre_marca
+      nombre_Marca: nombre_Marca
     }).then(response => { // CASO EXITOSO
       if (response.status === 200) {
         mostrarExito("Registro exitoso");
@@ -96,13 +94,12 @@ const Marca = () => {
 
   // FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () => {
-    setClave_Marca(0);
-    setNombre_Marca("");
+    setnombre_Marca("");
   };
 
   // COLUMNAS PARA LA TABLA
   const columns = [
-    { field: 'clave_marca', header: 'Clave' },
+    { field: 'id_Marca', header: 'Clave' },
     { field: 'nombre_Marca', header: 'Nombre' }
   ];
 
@@ -111,18 +108,12 @@ const Marca = () => {
     get();
   }, []);
 
-  // ORDENAR LOS DATOS POR LA CLAVE AL INGRESAR A LA PAGINA
-  useEffect(() => {
-    setFiltroMarca([...marcaList].sort((a, b) => a.clave_marca - b.clave_marca));
-  }, [marcaList]);
-
   // FUNCION PARA LA BARRA DE BUSQUEDA
   const onSearch = (e) => {
     const value = e.target.value.toLowerCase();
     const filteredData = marcaList.filter((item) => {
       return (
-        item.clave_marca.toString().includes(value) ||
-        item.nombre_marca.toLowerCase().includes(value)
+        item.nombre_Marca.toLowerCase().includes(value)
       );
     });
     setFiltroMarca(filteredData);
@@ -130,7 +121,6 @@ const Marca = () => {
 
   // ACTIVAR EDICION DE CELDA
   const cellEditor = (options) => {
-    setEditando(true);
     return textEditor(options);
   };
 
@@ -170,13 +160,6 @@ const Marca = () => {
     return regex.test(value);
   };
 
-  const validarNumero = (value) => {
-    // Expresión regular para validar números enteros positivos
-    const regex = /^[1-9]\d*$/;
-    // Verificar si el valor coincide con la expresión regular
-    return value === '' || regex.test(value);
-  };
-
   return (
     <>
       {/* APARICION  MENSAJES (TOAST) */}
@@ -184,22 +167,12 @@ const Marca = () => {
       {/*  REGISTRO */}
       <Panel header="Registrar Marca" className='mt-3' toggleable>
         <div className="formgrid grid mx-8">
-          <div className="field col-2">
-            <label>Clave</label>
-            <InputText type="text" keyfilter="pint" value={clave_marca} maxLength={10}
-              onChange={(event) => {
-                if (validarNumero(event.target.value)) {
-                  setClave_Marca(event.target.value);
-                }
-              }}
-              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-          </div>
           <div className="field col-10">
             <label>Nombre</label>
-            <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={nombre_marca} maxLength={255}
+            <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={nombre_Marca} maxLength={255}
               onChange={(event) => {
                 if (validarTexto(event.target.value)) {
-                  setNombre_Marca(event.target.value);
+                  setnombre_Marca(event.target.value);
                 }
               }}
               className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
@@ -219,7 +192,7 @@ const Marca = () => {
         <DataTable value={filtroMarca.length ? filtroMarca : marcaList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
             return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} 
-            editor={field === 'nombre_Marca' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete} />;
+            editor={field === 'nombre_Marca' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => setEditando(true)}  />;
           })}
         </DataTable>
       </Panel>

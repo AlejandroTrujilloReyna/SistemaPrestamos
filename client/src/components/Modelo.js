@@ -10,7 +10,6 @@ import ModeloService from '../services/ModeloService';
 
 const Modelo = () => {
   // VARIABLES PARA EL REGISTRO
-  const [id_Modelo, setId_Modelo] = useState(0);
   const [nombre_Modelo, setNombre_Modelo] = useState("");
 
   // VARIABLES PARA LA CONSULTA
@@ -93,7 +92,6 @@ const Modelo = () => {
 
   // FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () => {
-    setId_Modelo(0);
     setNombre_Modelo("");
   };
 
@@ -107,11 +105,6 @@ const Modelo = () => {
   useEffect(() => {
     get();
   }, []);
-
-  // ORDENAR LOS DATOS POR EL ID AL INGRESAR A LA PAGINA
-  useEffect(() => {
-    setFiltroModelo([...modeloList].sort((a, b) => a.id_Modelo - b.id_Modelo));
-  }, [modeloList]);
 
   // FUNCION PARA LA BARRA DE BUSQUEDA
   const onSearch = (e) => {
@@ -167,13 +160,6 @@ const Modelo = () => {
     return regex.test(value);
   };
 
-  const validarNumero = (value) => {
-    // Expresión regular para validar números enteros positivos
-    const regex = /^[1-9]\d*$/;
-    // Verificar si el valor coincide con la expresión regular
-    return value === '' || regex.test(value);
-  };
-
   return (
     <>
       {/* APARICION DE LOS MENSAJES (TOAST) */}
@@ -181,16 +167,6 @@ const Modelo = () => {
       {/* PANEL PARA EL REGISTRO */}
       <Panel header="Registrar Modelo" className='mt-3' toggleable>
         <div className="formgrid grid mx-8">
-          <div className="field col-2">
-            <label>ID</label>
-            <InputText type="text" keyfilter="pint" value={id_Modelo} maxLength={10}
-              onChange={(event) => {
-                if (validarNumero(event.target.value)) {
-                  setId_Modelo(event.target.value);
-                }
-              }}
-              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-          </div>
           <div className="field col-10">
             <label>Nombre</label>
             <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={nombre_Modelo} maxLength={255}

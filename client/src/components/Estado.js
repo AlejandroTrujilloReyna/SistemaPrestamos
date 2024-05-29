@@ -10,7 +10,6 @@ import EstadoService from '../services/EstadoService';
 
 const Estado = () => {
   // VARIABLES PARA EL REGISTRO
-  const [id_Estado, setId_Estado] = useState(0);
   const [nombre_Estado, setNombre_Estado] = useState("");
 
   // VARIABLES PARA LA CONSULTA
@@ -93,7 +92,6 @@ const Estado = () => {
 
   // FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () => {
-    setId_Estado(0);
     setNombre_Estado("");
   };
 
@@ -177,16 +175,6 @@ const Estado = () => {
       {/* PANEL PARA EL REGISTRO */}
       <Panel header="Registrar Estado" className='mt-3' toggleable>
         <div className="formgrid grid mx-8">
-          <div className="field col-2">
-            <label>ID</label>
-            <InputText type="text" keyfilter="pint" value={id_Estado} maxLength={10}
-              onChange={(event) => {
-                if (validarNumero(event.target.value)) {
-                  setId_Estado(event.target.value);
-                }
-              }}
-              className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-          </div>
           <div className="field col-10">
             <label>Nombre</label>
             <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={nombre_Estado} maxLength={255}
