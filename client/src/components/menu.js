@@ -9,46 +9,49 @@ const Menu = () => {
 
         {
             label: 'Permisos',
-            icon: 'pi pi-building-columns',
+            icon: 'pi pi-ticket',
             command: () => { window.location.href = '/PermisoUsuario'; }
         },
 
-
+        
         {
             label: 'Programa Educativo',
             icon: 'pi pi-building-columns',
             command: () => { window.location.href = '/ProgramaEducativo'; }
         },
-
+        {
+            label: 'Projects',
+            icon: 'pi pi-search',
+            items: [
         {
             label: 'Tipo de Solicitante',
-            icon: 'pi pi-building-columns',
+            icon: 'pi pi-users',
             command: () => { window.location.href = '/TipoSolicitante'; }
         },
 
         {
             label: 'Usuario',
-            icon: 'pi pi-building-columns',
+            icon: 'pi pi-user',
             command: () => { window.location.href = '/Usuario'; }
         },
         {
             label: 'Solicitante',
-            icon: 'pi pi-building-columns',
+            icon: 'pi pi-user-edit',
             command: () => { window.location.href = '/Solicitante'; }
-        },
+        }]},
         {
-            label: 'Prestamo',
-            icon: 'pi pi-building-columns',
+            label: 'Historial',
+            icon: 'pi pi-history',
             command: () => { window.location.href = '/Prestamo'; }
         },
         {
-            label: 'PrestamoN',
-            icon: 'pi pi-building-columns',
+            label: 'Prestamo',
+            icon: 'pi pi-receipt',
             command: () => {window.location.href='/PrestamoN';}
         },
         {
             label: 'Cerrar session',
-            icon: 'pi pi-building-columns',
+            icon: 'pi pi-sign-out',
             command: () => { window.location.href = '/Login'; }
         }
     ];

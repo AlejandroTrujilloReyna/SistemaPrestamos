@@ -7,6 +7,9 @@ const PrestamoServices = {
     consultarPrestamoGeneral: () => {
         return Axios.get("http://localhost:3001/prestamo/consultarPrestamoGeneral");
     },
+    consultarPrestamoGeneralDevuelto: () => {
+        return Axios.get("http://localhost:3001/prestamo/consultarPrestamoGeneralDevuelto");
+    },
     consultarEspecifica: (datos) => {
         return Axios.get("http://localhost:3001/prestamo/consultarEspecifica",datos);
     },

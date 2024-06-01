@@ -23,7 +23,17 @@ router.post("/registrarPrestamo", (req, res) => {
 });
 
 router.get("/consultarPrestamoGeneral", (req, res) => {
-    db.query('SELECT p.*, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo DESC', (err, results) => {
+    db.query('SELECT p.*, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material WHERE p.fechaH_Devolucion IS NULL GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo DESC', (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("Error interno del servidor");
+        }
+        res.status(200).json(results);
+    });
+});
+
+router.get("/consultarPrestamoGeneralDevuelto", (req, res) => {
+    db.query('SELECT p.*, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material WHERE p.fechaH_Devolucion GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo ASC', (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).send("Error interno del servidor");
