@@ -15,6 +15,7 @@ import MarcaService from '../services/MarcaService';
 import ModeloService from '../services/ModeloService';
 import EstadoService from '../services/EstadoService';
 import UbicacionMaterialService from '../services/UbicacionMaterialService'
+import Axios from 'axios';
 
 const Material = () => {
   //VARIABLES PARA EL REGISTRO
@@ -116,16 +117,14 @@ const Material = () => {
       }
     });
   }
-  
-  const del = (rowData)=>{
-    MaterialService.eliminarMaterial(rowData.id_Material).then(response=>{//CASO EXITOSO
-      if(response.status === 200){
-        mostrarExito("Eliminacion exitosa");
-        get();
-        limpiarCampos();
-      }
+
+  const del = (id)=>{
+    Axios.delete(`http://localhost:3001/material/eliminarMaterial/${id}`).then(()=>{
+      get();
+      limpiarCampos();
     });
   }
+
   //FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () =>{
     setnombre_Material("");
@@ -577,7 +576,7 @@ const Material = () => {
         <DataTable value={filtromaterial.length ? filtromaterial :materialList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
             if(field=== 'delete'){
-              return <Column key = {field} body={(rowData) => <Button label = "Eliminar" onClick={() => del(rowData)} />} style={{width: '25%'}} />;
+              return <Column key = {field} body={(rowData) => <Button label = "Eliminar" onClick={() => del(rowData.id_Material)} />} style={{width: '25%'}} />;
             }else{
               return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} body ={(rowData) => renderBody(rowData,field)}
               editor={field === 'id_Material' ? null : (options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => seteditando(true)} />;       

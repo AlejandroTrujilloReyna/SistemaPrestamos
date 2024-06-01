@@ -81,14 +81,14 @@ router.put("/modificarMaterial", (req, res) => {
     });    
 });
 
-router.delete("/eliminarMaterial", (req,res)=>{
-    const id_Material = req.id_Material;
+router.delete("/eliminarMaterial/:id_Material", (req,res)=>{
+    const id_Material = req.params.id_Material;
     
     db.query('DELETE FROM material WHERE id_Material=?', [id_Material], (err,result)=>{
         if(err){
             console.log(err)
         }else{
-            res.send("Material Eliminado con exito")
+            res.status(200).send("Material Eliminado con exito")
         }
     })
 
