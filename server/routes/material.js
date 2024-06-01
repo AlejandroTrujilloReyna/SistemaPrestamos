@@ -29,94 +29,17 @@ router.post("/registrarMaterial", (req, res) => {
         if(results.length > 0) {
             return res.status(400).send("La clave del Meterial ya existe");
         }
-        db.query('SELECT * FROM material WHERE nombre_Material = ?',[nombre_Material], (err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).send("Error meterial del servidor");
-            }
-    
-            if(results.length > 0) {
-                return res.status(401).send("El Nombre del Meterial ya existe");
-            }
-            
-            db.query('SELECT * FROM material WHERE descripcion_Material = ?',[descripcion_Material], (err, results) => {
-                if(err) {
-                    console.log(err);
-                    return res.status(500).send("Error meterial del servidor");
-                }
-        
-                if(results.length > 0) {
-                    return res.status(401).send("la descripcion del Meterial ya existe");
-                }
-                
-                db.query('SELECT * FROM material WHERE permiso_Prestamo = ?',[permiso_Prestamo], (err, results) => {
-                    if(err) {
+
+            db.query('INSERT INTO material(id_Material, nombre_Material, descripcion_Material, permiso_Prestamo, id_Categoria, id_Marca, id_Modelo, id_Estado, id_UbicacionMaterial) VALUES (?,?,?,?,?,?,?,?,?)',
+                [id_Material, nombre_Material, descripcion_Material, permiso_Prestamo, id_Categoria, id_Marca, id_Modelo, id_Estado, id_UbicacionMaterial], (err, result) => {
+                    if (err) {
                         console.log(err);
-                        return res.status(500).send("Error meterial del servidor");
-                    }
-            
-                    if(results.length > 0) {
-                        return res.status(401).send("El permiso del Meterial ya existe");
-                    }
-                    
-                    db.query('SELECT * FROM material WHERE id_Categoria = ?',[id_Categoria], (err, results) => {
-                        if(err) {
-                            console.log(err);
                             return res.status(500).send("Error meterial del servidor");
                         }
-                
-                        if(results.length > 0) {
-                            return res.status(401).send("La categoria del Meterial ya existe");
-                        }
-                        
-                        db.query('SELECT * FROM material WHERE id_Marca = ?',[id_Marca], (err, results) => {
-                            if(err) {
-                                console.log(err);
-                                return res.status(500).send("Error meterial del servidor");
-                            }
-                    
-                            if(results.length > 0) {
-                                return res.status(401).send("La Marca ya existe");
-                            }
-                            
-                            db.query('SELECT * FROM material WHERE id_Modelo = ?',[id_Modelo], (err, results) => {
-                                if(err) {
-                                    console.log(err);
-                                    return res.status(500).send("Error meterial del servidor");
-                                }
-                        
-                                if(results.length > 0) {
-                                    return res.status(401).send("El Modelo del Meterial ya existe");
-                                }
-                                
-                                db.query('SELECT * FROM material WHERE id_Estado = ?',[id_Estado], (err, results) => {
-                                    if(err) {
-                                        console.log(err);
-                                        return res.status(500).send("Error meterial del servidor");
-                                    }
-                            
-                                    if(results.length > 0) {
-                                        return res.status(401).send("El Nombre del Meterial ya existe");
-                                    }
-
-                                    db.query('INSERT INTO material(id_Material, nombre_Material, descripcion_Material, permiso_Prestamo, id_Categoria, id_Marca, id_Modelo, id_Estado, id_UbicacionMaterial) VALUES (?,?,?,?,?,?,?,?,?)',
-                                    [id_Material, nombre_Material, descripcion_Material, permiso_Prestamo, id_Categoria, id_Marca, id_Modelo, id_Estado, id_UbicacionMaterial], (err, result) => {
-                                        if (err) {
-                                            console.log(err);
-                                            return res.status(500).send("Error meterial del servidor");
-                                        }
-                                        res.status(200).send("Material registrado con éxito");
-                                    });  
-                                });
-                            });
-                        });
-                    });
+                        res.status(200).send("Material registrado con éxito");
+                    });  
                 });
-            });
-        });  
-    });
-});
-
+             });
 
 router.get("/consultarMaterial", (req, res) => {
     db.query('SELECT * FROM Material', (err, results) => {
@@ -153,9 +76,22 @@ router.put("/modificarMaterial", (req, res) => {
                 console.log(err);
                 return res.status(500).send("Error meterial del servidor");
             }
-            res.status(200).send("Meterial modificado con exito");        
+            res.status(200).send("Material modificado con exito");        
         });
     });    
 });
+
+router.delete("/eliminarMaterial", (req,res)=>{
+    const id_Material = req.id_Material;
+    
+    db.query('DELETE FROM material WHERE id_Material=?', [id_Material], (err,result)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.send("Material Eliminado con exito")
+        }
+    })
+
+})
 
 module.exports = router;

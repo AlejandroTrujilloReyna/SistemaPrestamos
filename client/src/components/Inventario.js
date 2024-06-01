@@ -128,7 +128,6 @@ const Inventario = () => {
     setfiltroinventario(filteredData);
   }; 
 
-  //MANDAR A LLAMAR A LA LISTA DE UNIDADES ACADEMICAS
   useEffect(() => {
     UbicacionInventarioService.consultarUbicacionInventario()
       .then(response => {
@@ -143,8 +142,9 @@ const Inventario = () => {
   const renderBody = (rowData, field) => {
     if (field === 'id_UbicacionInventario') {
       const unidad = ubicacionesinventarios.find((unidad) => unidad.id_UbicacionInventario === rowData.id_UbicacionInventario);
-      return unidad ? `${unidad.nombre_UbicacionInventario}` : '';
-    }else {
+      return unidad ? `${unidad.nombre_ubicacioninventario}` : '';
+    }
+    else {
       return rowData[field]; // Si no es 'clave_UnidadAcademica' ni 'clave_ProgramaEducativo', solo retorna el valor del campo
     }
   };
@@ -285,7 +285,7 @@ const Inventario = () => {
         <DataTable value={filtroinventario.length ? filtroinventario :inventarioList} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
               return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '15%' }} body={(rowData) => renderBody(rowData, field)}
-              editor={field === 'nombre_Inventario' ? null : (options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => seteditando(true)}/>;
+              editor={field === 'id_Inventario' ? null : (options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => seteditando(true)}/>;
           })}
         </DataTable>
       </Panel>  

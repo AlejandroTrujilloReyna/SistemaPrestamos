@@ -38,7 +38,7 @@ const Material = () => {
 
   //VARIABLE PARA LA MODIFICACION QUE INDICA QUE SE ESTA EN EL MODO EDICION
   const [editando, seteditando] = useState(false);
-  
+
   //VARIABLES PARA EL ERROR
   const toast = useRef(null);
 
@@ -116,9 +116,16 @@ const Material = () => {
       }
     });
   }
-
-  //!!!EXTRAS DE REGISTRO
-
+  
+  const del = (rowData)=>{
+    MaterialService.eliminarMaterial(rowData.id_Material).then(response=>{//CASO EXITOSO
+      if(response.status === 200){
+        mostrarExito("Eliminacion exitosa");
+        get();
+        limpiarCampos();
+      }
+    });
+  }
   //FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () =>{
     setnombre_Material("");
@@ -143,7 +150,8 @@ const Material = () => {
     { field: 'id_Marca', header: 'Marca'},
     { field: 'id_Modelo', header: 'Modelo'},
     { field: 'id_Estado', header: 'Estado'},
-    { field: 'id_UbicacionMaterial', header: 'Ubicacion Material' }
+    { field: 'id_UbicacionMaterial', header: 'Ubicacion Material' },
+    { field: 'delete', header: 'Eliminar'}
   ];
 
   //MANDAR A LLAMAR LOS DATOS EN CUANTO SE INGRESA A LA PAGINA
@@ -352,12 +360,11 @@ const Material = () => {
         onChange={(e) => options.editorCallback(e.value)}
         optionLabel="nombre_ubicacionmaterial" 
         optionValue="id_UbicacionMaterial" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
-        placeholder="Selecciona una UbicacionMaterial" 
+        placeholder="Selecciona una Ubicacion Material" 
           />
         );
       };  
 
-  
   //COMPLETAR MODIFICACION
   const onCellEditComplete = (e) => {
       let { rowData, newValue, field, originalEvent: event } = e;
@@ -380,61 +387,59 @@ const Material = () => {
           } 
         break;        
         case 'permiso_Prestamo':
-        if (newValue.trim().length > 0 && newValue !== rowData[field]){ 
-          rowData[field] = newValue; put(rowData);
-        }
-        else{
-          event.preventDefault();
-        } 
+          if (newValue !== rowData[field]){             
+            rowData[field] = newValue;
+            put(rowData);                       
+          }else{
+            event.preventDefault();
+          }  
       break;        
       case 'id_Categoria':
-      if (newValue.trim().length > 0 && newValue !== rowData[field]){ 
-        rowData[field] = newValue; put(rowData);
-      }
-      else{
-        event.preventDefault();
-      } 
+        if (newValue !== rowData[field]){             
+          rowData[field] = newValue;
+          put(rowData);                       
+        }else{
+          event.preventDefault();
+        } 
       break;
       case 'id_Marca':
-      if (newValue.trim().length > 0 && newValue !== rowData[field]){ 
-        rowData[field] = newValue; put(rowData);
-      }
-      else{
-        event.preventDefault();
-      } 
+        if (newValue !== rowData[field]){             
+          rowData[field] = newValue;
+          put(rowData);                       
+        }else{
+          event.preventDefault();
+        } 
       break;      
       case 'id_Modelo':
-      if (newValue.trim().length > 0 && newValue !== rowData[field]){ 
-        rowData[field] = newValue; put(rowData);
-      }
-      else{
-        event.preventDefault();
-      } 
+        if (newValue !== rowData[field]){             
+          rowData[field] = newValue;
+          put(rowData);                       
+        }else{
+          event.preventDefault();
+        } 
       break;
       case 'id_Estado':
-        if (newValue.trim().length > 0 && newValue !== rowData[field]){ 
-          rowData[field] = newValue; put(rowData);
-        }
-        else{
+        if (newValue !== rowData[field]){             
+          rowData[field] = newValue;
+          put(rowData);                       
+        }else{
           event.preventDefault();
         } 
         break;
 
         case 'id_UbicacionMaterial':
-          if(newValue > 0 && newValue !== null && newValue !== rowData[field]){
-            rowData[field] = newValue; put(rowData);
+          if (newValue !== rowData[field]){             
+            rowData[field] = newValue;
+            put(rowData);                       
           }else{
             event.preventDefault();
-          }
+          } 
           break; 
         default:
         break;
       }
       seteditando(false);
   };
-  
-  
-  //!!!EXTRAS CAMPOS
 
   const validarTexto = (value) => {
     // Expresión regular para validar caracteres alfabeticos y espacios
@@ -485,9 +490,9 @@ const Material = () => {
           </div>                        
           <div className="field col-2">
               <label>Permiso Prestamo</label>
-              <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={permiso_Prestamo} maxLength={100}
+              <InputText type="text" keyfilter={"pint"} value={permiso_Prestamo} maxLength={100}
                 onChange={(event) => {
-                  if (validarTexto(event.target.value)) {
+                  if (validarNumero(event.target.value)) {
                     setpermiso_Prestamo(event.target.value);
                   }
                 }}
@@ -499,11 +504,11 @@ const Material = () => {
               value={id_Categoria} 
               options={categorias} 
               onChange={(e) => {
-                setCategorias(e.value);
+                setid_Categoria(e.value);
               }} 
-              optionLabel="nombre_Modelo" 
-              optionValue="id_Modelo" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
-              placeholder="Seleccione un Modelo" 
+              optionLabel="nombre_Categoria" 
+              optionValue="id_Categoria" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
+              placeholder="Seleccione una Categoria" 
             />
           </div> 
           <div className="field col-6">
@@ -512,10 +517,10 @@ const Material = () => {
               value={id_Marca} 
               options={marcas} 
               onChange={(e) => {
-                setMarcas(e.value);
+                setid_Marca(e.value);
               }} 
-              optionLabel="nombre_Marcas" 
-              optionValue="id_Marcas" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
+              optionLabel="nombre_Marca" 
+              optionValue="id_Marca" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
               placeholder="Seleccione una Marca" 
             />
           </div> 
@@ -536,12 +541,12 @@ const Material = () => {
           <label>Estado</label>
             <Dropdown className="text-base text-color surface-overlay p-0 m-0 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
               value={id_Estado} 
-              options={ubicacionesMaterial} 
+              options={estados} 
               onChange={(e) => {
                 setid_Estado(e.value);
               }} 
               optionLabel="nombre_Estado" 
-              optionValue="clave_Estado" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
+              optionValue="id_Estado" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
               placeholder="Seleccione un Estado" 
             />
           </div> 
@@ -553,16 +558,16 @@ const Material = () => {
               onChange={(e) => {
                 setid_UbicacionMaterial(e.value);
               }} 
-              optionLabel="nombre_UnidadAcademica" 
-              optionValue="clave_UnidadAcademica" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
-              placeholder="Seleccione una unidad académica" 
+              optionLabel="nombre_UbicacionMaterial" 
+              optionValue="id_UbicacionMaterial" // Aquí especificamos que la clave de la unidad académica se utilice como el valor de la opción seleccionada
+              placeholder="Seleccione una ubicacion" 
             />
           </div> 
         </div>
         <div className="mx-8 mt-4">
           <Button label="Guardar" onClick={add} severity='success' />
         </div>        
-      </Panel>
+      </Panel>  
       {/*PANEL PARA LA CONSULTA DONDE SE INCLUYE LA MODIFICACION*/}
       <Panel header="Consultar Material" className='mt-3' toggleable>
       <div className="mx-8 mb-4">
@@ -571,9 +576,14 @@ const Material = () => {
       </div>  
         <DataTable value={filtromaterial.length ? filtromaterial :materialList} editMode='cell' size='small' tableStyle={{ minWidth: '50rem' }}>
           {columns.map(({ field, header }) => {
+            if(field=== 'delete'){
+              return <Column key = {field} body={(rowData) => <Button label = "Eliminar" onClick={() => del(rowData)} />} style={{width: '25%'}} />;
+            }else{
               return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} body ={(rowData) => renderBody(rowData,field)}
-              editor={field === 'nombre_Material' ? (options) => cellEditor(options): null} onCellEditComplete={onCellEditComplete}/>;
-          })}
+              editor={field === 'id_Material' ? null : (options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => seteditando(true)} />;       
+            }
+        })}
+          
         </DataTable>
       </Panel>              
     </>

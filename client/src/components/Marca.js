@@ -10,7 +10,7 @@ import MarcaService from '../services/MarcaService';
 
 const Marca = () => {
   // VARIABLES PARA EL REGISTRO
-  const [nombre_Marca, setnombre_Marca] = useState("");
+  const [nombre_Marca, setNombre_Marca] = useState("");
 
   // VARIABLES PARA LA CONSULTA
   const [marcaList, setMarcaList] = useState([]);
@@ -94,7 +94,7 @@ const Marca = () => {
 
   // FUNCION PARA LIMPIAR CAMPOS AL REGISTRAR
   const limpiarCampos = () => {
-    setnombre_Marca("");
+    setNombre_Marca("");
   };
 
   // COLUMNAS PARA LA TABLA
@@ -113,6 +113,7 @@ const Marca = () => {
     const value = e.target.value.toLowerCase();
     const filteredData = marcaList.filter((item) => {
       return (
+        item.id_Marca.toString().includes(value) ||
         item.nombre_Marca.toLowerCase().includes(value)
       );
     });
@@ -172,7 +173,7 @@ const Marca = () => {
             <InputText type="text" keyfilter={/^[a-zA-Z\s]+$/} value={nombre_Marca} maxLength={255}
               onChange={(event) => {
                 if (validarTexto(event.target.value)) {
-                  setnombre_Marca(event.target.value);
+                  setNombre_Marca(event.target.value);
                 }
               }}
               className="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
