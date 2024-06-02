@@ -208,13 +208,15 @@ const Prestamo = () => {
       <Toolbar className="mt-3"  right={rightToolbarTemplate}></Toolbar>
       {/*Tabla de Contenido*/}
       <div className="card">
-        <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}          
-          
+        <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}                
           filters={lazyState.filters}
-
           header={header}>
+            
           {columns.map(({ field, header }) => {
-            return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '15%' }} body={(rowData) => renderBody(rowData, field)}
+            if (field === 'id_Prestamo') {
+              return null;
+            }
+            return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '20%' }} body={(rowData) => renderBody(rowData, field)}
                />;
           })}          
         </DataTable>

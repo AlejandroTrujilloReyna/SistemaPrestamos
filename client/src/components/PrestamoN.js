@@ -282,7 +282,7 @@ const PrestamoN = () => {
   //!!!EXTRAS TABLA
   //COLUMNAS PARA LA TABLA
   const columns = [
-    { field: 'id_Prestamo', header: 'Id' },
+    { field: 'id_Prestamo', header: 'Id'},
     { field: 'fechaH_Prestamo', header: 'Prestamo' },
     { field: 'fechaH_Devolucion', header: 'Devolucion' },
     { field: 'id_Usuario', header: 'Prestador', },
@@ -413,13 +413,16 @@ const PrestamoN = () => {
 
           header={header}>
           {columns.map(({ field, header }) => {
+            if (field === 'id_Prestamo') {
+              return null;
+            }
             return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '20%' }} body={(rowData) => renderBody(rowData, field)}
                />;
           })}
           <Column
             body={accionesTabla}
             exportable={false}
-            style={{ minWidth: '15%' }}
+            style={{ minWidth: '20%'}}
             alignFrozen="right"
             frozen={accionesFrozen}
           ></Column>
