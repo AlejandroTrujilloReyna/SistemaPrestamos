@@ -30,10 +30,11 @@ const Prestamo = () => {
   const [lazyState, setlazyState] = useState({
     filters: {
       id_Prestamo: { value: '', matchMode: 'startsWith' },
-      fechaH_Prestamo: { value: '', matchMode: 'equals' },
-      fechaH_Devolucion: { value: '', matchMode: 'equals' },
-      id_Usuario: { value: '', matchMode: 'startsWith' },
-      id_Solicitante: { value: '', matchMode: 'contains' }
+      fechaH_Prestamo: { value: '', matchMode: 'startsWith' },
+      fechaH_Devolucion: { value: '', matchMode: 'startsWith' },
+      usuario: { value: '', matchMode: 'contains' },
+      solicitante: { value: '', matchMode: 'contains' },
+      conjuntoMaterial: { value: '', matchMode: 'contains' }
     },
   });
   //VARIABLES PARA EL REGISTRO
@@ -78,7 +79,7 @@ const Prestamo = () => {
 
   //FUNCION PARA CONSULTA
   const get = () => {
-    PrestamoServices.consultarPrestamoGeneralDevuelto().then((response) => {//CASO EXITOSO
+    PrestamoServices.consultarPrestamoCompletoDevuelto().then((response) => {//CASO EXITOSO
       setprestamoList(response.data);
     }).catch(error => {//EXCEPCIONES
       if (error.response.status === 500) {
@@ -154,6 +155,8 @@ const Prestamo = () => {
     { field: 'fechaH_Devolucion', header: 'Devolucion' },
     { field: 'id_Usuario', header: 'Prestador', },
     { field: 'id_Solicitante', header: 'Solicitante' },
+    { field: 'usuario', header: 'Prestador' },
+    { field: 'solicitante', header: 'Solicitante' },    
     { field: 'conjuntoMaterial', header: 'Materiales' }
   ];
 
@@ -209,15 +212,17 @@ const Prestamo = () => {
       {/*Tabla de Contenido*/}
       <div className="card">
         <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}                
+          filterDisplay="row"
+          onFilter={onFilter} 
           filters={lazyState.filters}
           header={header}>
             
           {columns.map(({ field, header }) => {
-            if (field === 'id_Prestamo') {
+            if (field === 'id_Prestamo' || field === 'id_Usuario' || field === 'id_Solicitante') {
               return null;
             }
             return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '20%' }} body={(rowData) => renderBody(rowData, field)}
-               />;
+            filter/>;
           })}          
         </DataTable>
       </div>
