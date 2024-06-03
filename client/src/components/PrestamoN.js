@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from 'react';
 import { classNames } from 'primereact/utils';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -14,8 +13,6 @@ import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
 import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
-import { IconField } from 'primereact/iconfield';
-import { InputIcon } from 'primereact/inputicon';
 import PrestamoServices from '../services/PrestamoServices';
 import MaterialServices from '../services/MaterialServices';
 import SolicitanteServices from '../services/SolicitanteServices';
@@ -47,7 +44,6 @@ const PrestamoN = () => {
   const [usuariosList, setusuariosList] = useState([]);
   const [MaterialSeleccionado, setMaterialSeleccionado] = useState(null);
   const [prestamoList, setprestamoList] = useState([]);
-  const [filtroprestamo, setfiltroprestamo] = useState([]);
   //VARIABLE PARA LA MODIFICACION QUE INDICA QUE SE ESTA EN EL MODO EDICION
   const [editando, seteditando] = useState(false);
   //VARIABLES PARA EL ERROR
@@ -196,17 +192,6 @@ const PrestamoN = () => {
   useEffect(() => {
     get();
   }, []);
-
-  //FUNCION PARA LA BARRA DE BUSQUEDA
-  const onSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    const filteredData = prestamoList.filter((item) => {
-      return (
-        item.id_Prestamo.toString().toLowerCase().includes(value)
-      );
-    });
-    setfiltroprestamo(filteredData);
-  };
   const listamateriales = () => {
     // Lista Materiales
     MaterialServices.consultarMaterialSinPrestar()
@@ -396,7 +381,7 @@ const PrestamoN = () => {
       <Toolbar className="mt-3" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
       {/*Tabla de Contenido*/}
       <div className="card">
-        <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}          
+        <DataTable ref={dt} value={prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}          
           filterDisplay="row"
           onFilter={onFilter} 
           filters={lazyState.filters}>
