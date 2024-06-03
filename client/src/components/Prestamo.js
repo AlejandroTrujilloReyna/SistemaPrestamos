@@ -142,6 +142,16 @@ const Prestamo = () => {
     dt.current.exportCSV();
   };
   
+  const leftToolbarTemplate = () => {
+    return (
+        <div className="flex flex-wrap gap-2">            
+            <label htmlFor="NoEmpleado" className="font-bold">
+              HISTORIAL
+            </label>            
+        </div>
+    );
+  };
+
   //Lado Derecho del Toolbar, boton Exportar
   const rightToolbarTemplate = () => {
     return <Button label="Exportar" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
@@ -176,25 +186,6 @@ const Prestamo = () => {
       return rowData[field]; // Si no es 'clave_UnidadAcademica' ni 'clave_ProgramaEducativo', solo retorna el valor del campo
     }
   };
-  //Cabecera de la Tabla
-  const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Salas</h4>
-
-      <IconField iconPosition="left">
-        <InputIcon className="pi pi-search" />
-        <InputText
-          type="search"
-          //onInput={(e) => setGlobalFilter(e.target.value)}
-          onInput={(e) => onSearch(e)}
-          placeholder="Buscar..."
-        />
-      </IconField>
-    </div>
-
-  );
-
- 
 
   // Funcion Necesaria para filtrado
   const onFilter = (event) => {
@@ -208,14 +199,13 @@ const Prestamo = () => {
       <Toast ref={toast} />
       
       {/*Barra de herramientas con boton nuevo, boton para anclar la columna de Acciones y Exportar*/}
-      <Toolbar className="mt-3"  right={rightToolbarTemplate}></Toolbar>
+      <Toolbar className="mt-3" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
       {/*Tabla de Contenido*/}
       <div className="card">
         <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}                
           filterDisplay="row"
           onFilter={onFilter} 
-          filters={lazyState.filters}
-          header={header}>
+          filters={lazyState.filters}>
             
           {columns.map(({ field, header }) => {
             if (field === 'id_Prestamo' || field === 'id_Usuario' || field === 'id_Solicitante') {

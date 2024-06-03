@@ -30,10 +30,11 @@ const PrestamoN = () => {
   const [lazyState, setlazyState] = useState({
     filters: {
       id_Prestamo: { value: '', matchMode: 'startsWith' },
-      fechaH_Prestamo: { value: '', matchMode: 'equals' },
-      fechaH_Devolucion: { value: '', matchMode: 'equals' },
-      id_Usuario: { value: '', matchMode: 'startsWith' },
-      id_Solicitante: { value: '', matchMode: 'contains' }
+      fechaH_Prestamo: { value: '', matchMode: 'startsWith' },
+      fechaH_Devolucion: { value: '', matchMode: 'startsWith' },
+      usuario: { value: '', matchMode: 'contains' },
+      solicitante: { value: '', matchMode: 'contains' },
+      conjuntoMaterial: { value: '', matchMode: 'contains' }
     },
   });
   //VARIABLES PARA EL REGISTRO
@@ -148,7 +149,7 @@ const PrestamoN = () => {
 
   //FUNCION PARA CONSULTA
   const get = () => {
-    PrestamoServices.consultarPrestamoGeneral().then((response) => {//CASO EXITOSO
+    PrestamoServices.consultarPrestamoCompleto().then((response) => {//CASO EXITOSO
       setprestamoList(response.data);
     }).catch(error => {//EXCEPCIONES
       if (error.response.status === 500) {
@@ -268,10 +269,13 @@ const PrestamoN = () => {
   //Lado Izquierdo del Toolbar, boton Nuevo y boton para congelar columna acciones
   const leftToolbarTemplate = () => {
     return (
-      <div className="flex flex-wrap gap-2">
-        <Button label="Nuevo" icon="pi pi-plus" severity="success" onClick={abrirNuevo} />
+      <React.Fragment>
+        <label htmlFor="NoEmpleado" className="font-bold mr-5">
+          PRESTAMO
+        </label>
+        <Button label="Nuevo" icon="pi pi-plus" severity="success" onClick={abrirNuevo} className="mr-2"/>
         <ToggleButton checked={accionesFrozen} onChange={(e) => setAccionesFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Acciones" offLabel="Acciones" />
-      </div>
+      </React.Fragment>
     );
   };
   //Lado Derecho del Toolbar, boton Exportar
@@ -282,11 +286,13 @@ const PrestamoN = () => {
   //!!!EXTRAS TABLA
   //COLUMNAS PARA LA TABLA
   const columns = [
-    { field: 'id_Prestamo', header: 'Id'},
+    { field: 'id_Prestamo', header: 'Id' },
     { field: 'fechaH_Prestamo', header: 'Prestamo' },
     { field: 'fechaH_Devolucion', header: 'Devolucion' },
     { field: 'id_Usuario', header: 'Prestador', },
     { field: 'id_Solicitante', header: 'Solicitante' },
+    { field: 'usuario', header: 'Prestador' },
+    { field: 'solicitante', header: 'Solicitante' },    
     { field: 'conjuntoMaterial', header: 'Materiales' }
   ];
 
@@ -306,23 +312,12 @@ const PrestamoN = () => {
       return rowData[field]; // Si no es 'clave_UnidadAcademica' ni 'clave_ProgramaEducativo', solo retorna el valor del campo
     }
   };
-  //Cabecera de la Tabla
-  const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Salas</h4>
 
-      <IconField iconPosition="left">
-        <InputIcon className="pi pi-search" />
-        <InputText
-          type="search"
-          //onInput={(e) => setGlobalFilter(e.target.value)}
-          onInput={(e) => onSearch(e)}
-          placeholder="Buscar..."
-        />
-      </IconField>
-    </div>
-
-  );
+    // Funcion Necesaria para filtrado
+    const onFilter = (event) => {
+      event['first'] = 0;
+      setlazyState(event);
+    };
 
   // Contenido de la columna de Acciones (Modificar y Eliminar)
   const accionesTabla = (rowData) => {
@@ -338,12 +333,6 @@ const PrestamoN = () => {
         />
       </React.Fragment>
     );
-  };
-
-  // Funcion Necesaria para filtrado
-  const onFilter = (event) => {
-    event['first'] = 0;
-    setlazyState(event);
   };
 
   return (
@@ -408,16 +397,15 @@ const PrestamoN = () => {
       {/*Tabla de Contenido*/}
       <div className="card">
         <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}          
-          
-          filters={lazyState.filters}
-
-          header={header}>
+          filterDisplay="row"
+          onFilter={onFilter} 
+          filters={lazyState.filters}>
           {columns.map(({ field, header }) => {
-            if (field === 'id_Prestamo') {
+            if (field === 'id_Prestamo' || field === 'id_Usuario' || field === 'id_Solicitante' || field === 'fechaH_Devolucion') {
               return null;
             }
-            return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '20%' }} body={(rowData) => renderBody(rowData, field)}
-               />;
+            return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} body={(rowData) => renderBody(rowData, field)}
+              filter />;
           })}
           <Column
             body={accionesTabla}
