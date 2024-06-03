@@ -32,6 +32,26 @@ router.get("/consultarPrestamoGeneral", (req, res) => {
     });
 });
 
+router.get("/consultarPrestamoCompleto", (req, res) => {
+    db.query('SELECT p.*, CONCAT(p.id_Usuario, " - ", u.nombre_Usuario) AS usuario, CONCAT(p.id_Solicitante, " - ", s.nombre_Solicitante) AS solicitante, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material LEFT JOIN usuario u ON p.id_Usuario = u.id_Usuario LEFT JOIN solicitante s ON p.id_Solicitante = s.id_Solicitante WHERE p.fechaH_Devolucion IS NULL GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo DESC', (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("Error interno del servidor");
+        }
+        res.status(200).json(results);
+    });
+});
+
+router.get("/consultarPrestamoCompletoDevuelto", (req, res) => {
+    db.query('SELECT p.*, CONCAT(p.id_Usuario, " - ", u.nombre_Usuario) AS usuario, CONCAT(p.id_Solicitante, " - ", s.nombre_Solicitante) AS solicitante, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material LEFT JOIN usuario u ON p.id_Usuario = u.id_Usuario LEFT JOIN solicitante s ON p.id_Solicitante = s.id_Solicitante WHERE p.fechaH_Devolucion GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo DESC', (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("Error interno del servidor");
+        }
+        res.status(200).json(results);
+    });
+});
+
 router.get("/consultarPrestamoGeneralDevuelto", (req, res) => {
     db.query('SELECT p.*, GROUP_CONCAT(DISTINCT m.nombre_Material SEPARATOR ", ") AS conjuntoMaterial FROM prestamo p LEFT JOIN conjuntomaterialprestamo cmp ON p.id_Prestamo = cmp.id_Prestamo LEFT JOIN material m ON cmp.id_Material = m.id_Material WHERE p.fechaH_Devolucion GROUP BY p.id_Prestamo ORDER BY p.id_Prestamo ASC', (err, results) => {
         if (err) {

@@ -19,7 +19,6 @@ import { InputIcon } from 'primereact/inputicon';
 import PrestamoServices from '../services/PrestamoServices';
 import MaterialServices from '../services/MaterialServices';
 import SolicitanteServices from '../services/SolicitanteServices';
-import UsuarioService from '../services/UsuarioServices';
 import MaterialPrestamoServices from '../services/MaterialPrestamoServices';
 
 const PrestamoN = () => {
@@ -30,12 +29,15 @@ const PrestamoN = () => {
   const [lazyState, setlazyState] = useState({
     filters: {
       id_Prestamo: { value: '', matchMode: 'startsWith' },
-      fechaH_Prestamo: { value: '', matchMode: 'equals' },
-      fechaH_Devolucion: { value: '', matchMode: 'equals' },
-      id_Usuario: { value: '', matchMode: 'startsWith' },
-      id_Solicitante: { value: '', matchMode: 'contains' }
+      fechaH_Prestamo: { value: '', matchMode: 'startsWith' },
+      fechaH_Devolucion: { value: '', matchMode: 'startsWith' },
+      usuario: { value: '', matchMode: 'contains' },
+      solicitante: { value: '', matchMode: 'contains' },
+      conjuntoMaterial: { value: '', matchMode: 'contains' }
     },
   });
+  //VARIABLES PARA BUSQUEDA
+  const [globalFilter, setGlobalFilter] = useState([]);
   //VARIABLES PARA EL REGISTRO
   var id_Prestamo = 0;
   const [id_Usuario, setid_usuario] = useState(sessionStorage.getItem('id'));
@@ -43,10 +45,9 @@ const PrestamoN = () => {
   //VARIABLES PARA LA CONSULTA
   const [solicitantesList, setsolicitantesList] = useState([]);
   const [materialList, setmaterialList] = useState([]);
-  const [usuariosList, setusuariosList] = useState([]);
   const [MaterialSeleccionado, setMaterialSeleccionado] = useState(null);
   const [prestamoList, setprestamoList] = useState([]);
-  const [filtroprestamo, setfiltroprestamo] = useState([]);
+
   //VARIABLE PARA LA MODIFICACION QUE INDICA QUE SE ESTA EN EL MODO EDICION
   const [editando, seteditando] = useState(false);
   //VARIABLES PARA EL ERROR
@@ -78,7 +79,7 @@ const PrestamoN = () => {
   //FUNCION PARA REGISTRAR
   const add = () => {
     //VALIDACION DE CAMPOS VACIOS
-    if (!id_Usuario || !id_Solicitante || !MaterialSeleccionado) {
+    if (!id_Usuario || !id_Solicitante || MaterialSeleccionado.length > 0) {
       mostrarAdvertencia("Existen Campos Obligatorios campos vacios");
       return;
     }
@@ -148,7 +149,7 @@ const PrestamoN = () => {
 
   //FUNCION PARA CONSULTA
   const get = () => {
-    PrestamoServices.consultarPrestamoGeneral().then((response) => {//CASO EXITOSO
+    PrestamoServices.consultarPrestamoCompleto().then((response) => {//CASO EXITOSO
       setprestamoList(response.data);
     }).catch(error => {//EXCEPCIONES
       if (error.response.status === 500) {
@@ -196,16 +197,6 @@ const PrestamoN = () => {
     get();
   }, []);
 
-  //FUNCION PARA LA BARRA DE BUSQUEDA
-  const onSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    const filteredData = prestamoList.filter((item) => {
-      return (
-        item.id_Prestamo.toString().toLowerCase().includes(value)
-      );
-    });
-    setfiltroprestamo(filteredData);
-  };
   const listamateriales = () => {
     // Lista Materiales
     MaterialServices.consultarMaterialSinPrestar()
@@ -226,15 +217,7 @@ const PrestamoN = () => {
       .catch(error => {
         console.error("Error fetching Solicitantes Registro Prestamo:", error);
       });
-      listamateriales();
-    // Lista Usuarios
-    UsuarioService.consultarUsuario()
-      .then(response => {
-        setusuariosList(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching Material sin Prestar Registro Prestamo:", error);
-      });
+      listamateriales();    
   }, []);
 
   //!!!EXTRAS DIALOG GUARDAR (REGISTRAR Y MODIFICAR)
@@ -268,15 +251,26 @@ const PrestamoN = () => {
   //Lado Izquierdo del Toolbar, boton Nuevo y boton para congelar columna acciones
   const leftToolbarTemplate = () => {
     return (
-      <div className="flex flex-wrap gap-2">
-        <Button label="Nuevo" icon="pi pi-plus" severity="success" onClick={abrirNuevo} />
+      <React.Fragment>
+        <label htmlFor="NoEmpleado" className="font-bold mr-5">
+          PRESTAMO
+        </label>
+        <Button label="Nuevo" icon="pi pi-plus" severity="success" onClick={abrirNuevo} className="mr-2"/>
         <ToggleButton checked={accionesFrozen} onChange={(e) => setAccionesFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Acciones" offLabel="Acciones" />
-      </div>
+      </React.Fragment>
     );
   };
   //Lado Derecho del Toolbar, boton Exportar
   const rightToolbarTemplate = () => {
-    return <Button label="Exportar" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
+    return(
+      <React.Fragment>
+        <Button label="Exportar" icon="pi pi-upload" className="p-button-help mr-5" onClick={exportCSV} />
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search" />
+          <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+        </IconField>
+      </React.Fragment>
+    )
   };
 
   //!!!EXTRAS TABLA
@@ -287,18 +281,20 @@ const PrestamoN = () => {
     { field: 'fechaH_Devolucion', header: 'Devolucion' },
     { field: 'id_Usuario', header: 'Prestador', },
     { field: 'id_Solicitante', header: 'Solicitante' },
+    { field: 'usuario', header: 'Prestador' },
+    { field: 'solicitante', header: 'Solicitante' },    
     { field: 'conjuntoMaterial', header: 'Materiales' }
   ];
 
   //FUNCION PARA QUE SE MUESTRE INFORMACION ESPECIFICA DE LAS LLAVES FORANEAS
   const renderBody = (rowData, field) => {
-    if (field === 'id_Usuario') {
+    /*if (field === 'id_Usuario') {
       const usuario = usuariosList.find((usuario) => usuario.id_Usuario === rowData.id_Usuario);
       return usuario ? `${usuario.nombre_Usuario} ${usuario.apellidoP_Usuario} ${usuario.apellidoM_Usuario}` : '';
     } else if (field === 'id_Solicitante') {
       const solicitan = solicitantesList.find((solicitan) => solicitan.id_Solicitante === rowData.id_Solicitante);
       return solicitan ? `${solicitan.nombre_Solicitante} ${solicitan.apellidoP_Solicitante} ${solicitan.apellidoM_Solicitate}` : '';
-    }else if (field === 'conjuntoMaterial' && rowData.conjuntoMaterial) {
+    }else */if (field === 'conjuntoMaterial' && rowData.conjuntoMaterial) {
       return rowData.conjuntoMaterial.split(',').map((unidad, index) => (
         <Tag key={index} value={unidad.trim()} className="mr-2 mb-2" />
       ));      
@@ -306,23 +302,11 @@ const PrestamoN = () => {
       return rowData[field]; // Si no es 'clave_UnidadAcademica' ni 'clave_ProgramaEducativo', solo retorna el valor del campo
     }
   };
-  //Cabecera de la Tabla
-  const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Salas</h4>
-
-      <IconField iconPosition="left">
-        <InputIcon className="pi pi-search" />
-        <InputText
-          type="search"
-          //onInput={(e) => setGlobalFilter(e.target.value)}
-          onInput={(e) => onSearch(e)}
-          placeholder="Buscar..."
-        />
-      </IconField>
-    </div>
-
-  );
+  // Funcion Necesaria para filtrado
+  const onFilter = (event) => {
+    event['first'] = 0;
+    setlazyState(event);
+  };
 
   // Contenido de la columna de Acciones (Modificar y Eliminar)
   const accionesTabla = (rowData) => {
@@ -339,13 +323,6 @@ const PrestamoN = () => {
       </React.Fragment>
     );
   };
-
-  // Funcion Necesaria para filtrado
-  const onFilter = (event) => {
-    event['first'] = 0;
-    setlazyState(event);
-  };
-
   return (
     <>
       {/*APARICION DE LOS MENSAJES (TOAST)*/}
@@ -407,17 +384,17 @@ const PrestamoN = () => {
       <Toolbar className="mt-3" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
       {/*Tabla de Contenido*/}
       <div className="card">
-        <DataTable ref={dt} value={filtroprestamo.length ? filtroprestamo : prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}          
-          
+        <DataTable ref={dt} value={prestamoList} scrollable scrollHeight="400px" size='small' tableStyle={{ minWidth: '50rem' }}                    
+          filterDisplay="row"
+          onFilter={onFilter} 
           filters={lazyState.filters}
-
-          header={header}>
+          globalFilter={globalFilter}>
           {columns.map(({ field, header }) => {
-            if (field === 'id_Prestamo') {
+            if (field === 'id_Prestamo' || field === 'id_Usuario' || field === 'id_Solicitante' || field === 'fechaH_Devolucion') {
               return null;
             }
-            return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '20%' }} body={(rowData) => renderBody(rowData, field)}
-               />;
+            return <Column sortable={editando === false} key={field} field={field} header={header} style={{ width: '25%' }} body={(rowData) => renderBody(rowData, field)}
+            filter/>;
           })}
           <Column
             body={accionesTabla}

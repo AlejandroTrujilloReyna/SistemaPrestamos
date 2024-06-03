@@ -7,8 +7,14 @@ const PrestamoServices = {
     consultarPrestamoGeneral: () => {
         return Axios.get("http://localhost:3001/prestamo/consultarPrestamoGeneral");
     },
+    consultarPrestamoCompleto: () => {
+        return Axios.get("http://localhost:3001/prestamo/consultarPrestamoCompleto");
+    },
     consultarPrestamoGeneralDevuelto: () => {
         return Axios.get("http://localhost:3001/prestamo/consultarPrestamoGeneralDevuelto");
+    },
+    consultarPrestamoCompletoDevuelto: () => {
+        return Axios.get("http://localhost:3001/prestamo/consultarPrestamoCompletoDevuelto");
     },
     consultarEspecifica: (datos) => {
         return Axios.get("http://localhost:3001/prestamo/consultarEspecifica",datos);
