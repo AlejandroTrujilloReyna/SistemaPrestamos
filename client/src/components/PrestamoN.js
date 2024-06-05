@@ -35,7 +35,7 @@ const PrestamoN = () => {
     },
   });
   //VARIABLES PARA EL REGISTRO
-  var id_Prestamo = 0;
+  let id_Prestamo = 0;
   const [id_Usuario, setid_usuario] = useState(sessionStorage.getItem('id'));
   const [id_Solicitante, setid_Solicitante] = useState("");
   //VARIABLES PARA LA CONSULTA
