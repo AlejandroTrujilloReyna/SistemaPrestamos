@@ -82,3 +82,13 @@ body {
     grid-template-columns: 1fr 1fr;
     height: 100vh;
   }
+
+  .error-border.p-inputtext{
+    border: 1px solid red;
+    color:  red;
+    outline: red;
+  }
+  
+  .mensaje-evaluacion{
+    color: red;
+  }
